@@ -1,0 +1,19 @@
+.nomatch {
+  position: relative;
+  padding: 50px;
+}
+
+.nomatch > h1 {
+  position: relative;
+  top: 10px;
+  margin: 0px;
+  margin-bottom: 5px;
+}
+
+.nomatch > p {
+  position: relative;
+  font-family: 'Open Sans';
+  top: 10px;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
