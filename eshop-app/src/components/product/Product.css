@@ -1,0 +1,15 @@
+.toggle-div {
+  padding-top: 20px;
+  position: fixed;
+  margin: auto;
+  left: 40%;
+  width: 'fit-content';
+}
+
+.sort-div {
+  padding-top: 60px;
+  padding-left: 70px;
+  padding-bottom: 2px;
+  position: fixed;
+  font-size: 15px;
+}

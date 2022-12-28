@@ -79,6 +79,30 @@ const NavBar = () => {
           </Search>
         </div>
         <div className='nav-list1'>
+          <Link to='/'>
+            <Button
+              color='inherit'
+              style={{
+                textTransform: 'none',
+                color: '#fff',
+                textDecoration: 'underline solid white',
+              }}
+            >
+              Home
+            </Button>
+          </Link>
+          <Link to='/'>
+            <Button
+              color='inherit'
+              style={{
+                textTransform: 'none',
+                color: '#fff',
+                textDecoration: 'underline solid white',
+              }}
+            >
+              Add Product
+            </Button>
+          </Link>
           <Link to='/login'>
             <Button
               color='inherit'
@@ -103,6 +127,17 @@ const NavBar = () => {
               Sign Up
             </Button>
           </Link>
+
+          <Button
+            href='/'
+            style={{
+              color: 'white',
+              backgroundColor: '#e50c6b',
+              textDecoration: 'none',
+            }}
+          >
+            LOGOUT
+          </Button>
         </div>
       </Toolbar>
     </AppBar>

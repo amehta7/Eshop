@@ -4,6 +4,7 @@ import NavBar from './components/navbar/NavBar'
 import Nomatch from './components/nomatch/NoMatch'
 import Login from './components/login/Login'
 import Signup from './components/signup/SignUp'
+import Product from './components/product/Product'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
       <div className='app'>
         <NavBar />
         <Routes>
+          <Route exact path='/' element={<Product />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='*' element={<Nomatch />} />
