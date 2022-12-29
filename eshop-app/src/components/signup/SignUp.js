@@ -57,7 +57,7 @@ const Signup = () => {
   }
 
   return (
-    <div>
+    <div className='signupdiv'>
       <Container component='main' maxWidth='xs'>
         <Box
           sx={{

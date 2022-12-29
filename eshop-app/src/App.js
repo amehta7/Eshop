@@ -5,6 +5,9 @@ import Nomatch from './components/nomatch/NoMatch'
 import Login from './components/login/Login'
 import Signup from './components/signup/SignUp'
 import Product from './components/product/Product'
+import ProductDetail from './components/productDetail/ProductDetail'
+import ProductList from './components/productList/ProductList'
+import CreateOrder from './components/createOrder/CreateOrder'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const App = () => {
@@ -16,6 +19,10 @@ const App = () => {
           <Route exact path='/' element={<Product />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
+
+          <Route path='/product/:id' element={<ProductDetail />} />
+          <Route path='/createorder' element={<CreateOrder />} />
+
           <Route path='*' element={<Nomatch />} />
         </Routes>
       </div>

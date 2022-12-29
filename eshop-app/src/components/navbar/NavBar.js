@@ -54,7 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const NavBar = () => {
   return (
-    <AppBar position='static' style={{ backgroundColor: '#3f51b5' }}>
+    <AppBar position='fixed' style={{ backgroundColor: '#3f51b5' }}>
       <Toolbar>
         <div>
           <ShoppingCartIcon style={{ fontSize: 29 }} />

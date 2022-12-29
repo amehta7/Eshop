@@ -1,0 +1,46 @@
+.imageCard {
+  object-fit: fill;
+}
+
+.container {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.content > div {
+  font-size: medium;
+  font-weight: bold;
+}
+
+.icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 20px 0px 188px;
+}
+
+.icon > div {
+  padding: 0px 10px 0px 10px;
+}
+
+.sort-div {
+  padding-bottom: 40px;
+  position: relative;
+  font-size: 15px;
+  width: 250px;
+}
+
+/* top | right | bottom | left */
+
+.card {
+  padding-left: 60px;
+}

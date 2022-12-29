@@ -40,7 +40,7 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <div className='logindiv'>
       <Container component='main' maxWidth='xs'>
         <Box
           sx={{

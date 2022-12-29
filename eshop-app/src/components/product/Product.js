@@ -2,16 +2,10 @@ import React, { useState } from 'react'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import './Product.css'
-import Select from 'react-select'
+
+import ProductList from '../productList/ProductList'
 
 let temp = ['All', 'Apparel', 'Electronics', 'Personal Care']
-
-const options = [
-  { value: 'default', label: 'Default' },
-  { value: 'desc', label: 'Price: High to Low' },
-  { value: 'asc', label: 'Price: Low to High' },
-  { value: 'newest', label: 'Newest' },
-]
 
 const Product = () => {
   const [cat, setCat] = useState('All')
@@ -41,9 +35,9 @@ const Product = () => {
           ))}
         </ToggleButtonGroup>
       </div>
-      <div className='sort-div'>
-        Sort By:
-        <Select defaultValue='Select...' options={options} />
+
+      <div className='list'>
+        <ProductList />
       </div>
     </React.Fragment>
   )
