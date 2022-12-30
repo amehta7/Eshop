@@ -5,9 +5,25 @@ import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import ConfirmOrder from '../confirmOrder/ConfirmOrder'
+import Address from '../address/Address'
+import CartItem from '../cartItem/CartItem'
 import './CreateOrder.css'
 
 const steps = ['Items', 'Select Address', 'Confirm Order']
+
+const RenderStep = (step) => {
+  switch (step) {
+    case 0:
+      return <CartItem />
+    case 1:
+      return <Address />
+    case 2:
+      return <ConfirmOrder />
+    default:
+      return <div>Not Found</div>
+  }
+}
 
 const CreateOrder = () => {
   const [activeStep, setActiveStep] = useState(0)
@@ -50,7 +66,7 @@ const CreateOrder = () => {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+            {RenderStep(activeStep)}
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Button
                 color='inherit'
