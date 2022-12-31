@@ -3,10 +3,13 @@ import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
+import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import ConfirmOrder from '../confirmOrder/ConfirmOrder'
 import Address from '../address/Address'
 import CartItem from '../cartItem/CartItem'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import './CreateOrder.css'
 
 const steps = ['Items', 'Select Address', 'Confirm Order']
@@ -51,8 +54,11 @@ const CreateOrder = () => {
         </Stepper>
         {activeStep === steps.length ? (
           <React.Fragment>
-            <div className='not-div'>
-              Order placed successfully! <span className='cancel-sign'>X</span>
+            <ToastContainer />
+            <div className='success-msg-div'>
+              <Typography variant='h5' gutterBottom>
+                Your order is confirmed!!!
+              </Typography>
             </div>
           </React.Fragment>
         ) : (
@@ -72,24 +78,29 @@ const CreateOrder = () => {
               <div className='btn-2-div'>
                 <Button onClick={handleNext}>
                   {activeStep === steps.length - 1 ? (
-                    <Button
-                      size='small'
-                      variant='contained'
-                      style={{
-                        backgroundColor: '#3f51b5',
-
-                        width: '150px',
-                      }}
-                    >
-                      PLACE ORDER
-                    </Button>
+                    <div>
+                      <Button
+                        size='small'
+                        variant='contained'
+                        style={{
+                          backgroundColor: '#3f51b5',
+                          width: '150px',
+                        }}
+                        onClick={() => {
+                          toast.success('Order placed successfully!', {
+                            position: toast.POSITION.TOP_RIGHT,
+                          })
+                        }}
+                      >
+                        PLACE ORDER
+                      </Button>
+                    </div>
                   ) : (
                     <Button
                       size='small'
                       variant='contained'
                       style={{
                         backgroundColor: '#3f51b5',
-
                         width: '30px',
                       }}
                     >
@@ -107,36 +118,3 @@ const CreateOrder = () => {
 }
 
 export default CreateOrder
-
-// <div className='bottom-btn-div'>
-//               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-//                 <Button
-//                   color='inherit'
-//                   disabled={activeStep === 0}
-//                   onClick={handleBack}
-//                   sx={{ mr: 1 }}
-//                 >
-//                   Back
-//                 </Button>
-//                 <Box sx={{ flex: '1 1 auto' }} />
-
-//                 <Button onClick={handleNext}>
-//                   {activeStep === steps.length - 1 ? (
-//                     <Button
-//                       size='small'
-//                       variant='contained'
-//                       href='/'
-//                       style={{
-//                         backgroundColor: '#3f51b5',
-
-//                         width: '150px',
-//                       }}
-//                     >
-//                       PLACE ORDER
-//                     </Button>
-//                   ) : (
-//                     'Next'
-//                   )}
-//                 </Button>
-//               </Box>
-//             </div>
