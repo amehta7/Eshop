@@ -91,7 +91,7 @@ const NavBar = () => {
               Home
             </Button>
           </Link>
-          <Link to='/'>
+          <Link to='/addProduct'>
             <Button
               color='inherit'
               style={{

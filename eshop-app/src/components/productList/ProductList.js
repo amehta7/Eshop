@@ -5,7 +5,8 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
 import CreateIcon from '@mui/icons-material/Create'
-import DeleteIcon from '@mui/icons-material/Delete'
+
+import DeleteProduct from '../deleteProduct/DeleteProduct'
 import Select from 'react-select'
 import './ProductList.css'
 
@@ -55,11 +56,13 @@ const ProductList = () => {
               BUY
             </Button>
             <div className='icon'>
-              <div>
-                <CreateIcon size='small' />
+              <div className='modify-div'>
+                <Button color='inherit' href='/modifyProduct'>
+                  <CreateIcon size='small' />
+                </Button>
               </div>
-              <div>
-                <DeleteIcon />
+              <div className='del-div'>
+                <DeleteProduct name='shoes' />
               </div>
             </div>
           </CardActions>

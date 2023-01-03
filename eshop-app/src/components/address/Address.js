@@ -60,18 +60,7 @@ const Address = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
-                <TextField
-                  margin='normal'
-                  required
-                  fullWidth
-                  id='name'
-                  label='Name'
-                  name='name'
-                  autoComplete='name'
-                  autoFocus
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+
                 <TextField
                   margin='normal'
                   required

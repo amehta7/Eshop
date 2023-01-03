@@ -8,6 +8,8 @@ import Product from './components/product/Product'
 import ProductDetail from './components/productDetail/ProductDetail'
 import ProductList from './components/productList/ProductList'
 import CreateOrder from './components/createOrder/CreateOrder'
+import ModifyProduct from './components/modifyProduct/ModifyProduct'
+import AddProduct from './components/addProduct/AddProduct'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const App = () => {
@@ -22,7 +24,8 @@ const App = () => {
 
           <Route path='/product/:id' element={<ProductDetail />} />
           <Route path='/createorder' element={<CreateOrder />} />
-
+          <Route path='/addProduct' element={<AddProduct />} />
+          <Route path='/modifyProduct' element={<ModifyProduct />} />
           <Route path='*' element={<Nomatch />} />
         </Routes>
       </div>
