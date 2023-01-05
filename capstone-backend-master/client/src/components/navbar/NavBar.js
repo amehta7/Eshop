@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './NavBar.css'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -9,6 +9,8 @@ import SearchIcon from '@mui/icons-material/Search'
 import { styled, alpha } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { fetchProductsByName } from '../../store/actions/index'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -52,7 +54,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-const NavBar = () => {
+const NavBar = ({ onFetchProductsByName, products }) => {
+  const [query, setQuery] = useState('')
+
+  useEffect(() => {
+    onFetchProductsByName(query)
+  }, [onFetchProductsByName, query])
+
   return (
     <AppBar position='fixed' style={{ backgroundColor: '#3f51b5' }}>
       <Toolbar>
@@ -73,6 +81,7 @@ const NavBar = () => {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              onClick={(e) => setQuery(e.target.value)}
               placeholder='Search…'
               inputProps={{ 'aria-label': 'search' }}
             />
@@ -144,4 +153,16 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+const mapStateToProps = (state) => {
+  return {
+    products: state.products.products,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetchProductsByName: (query) => dispatch(fetchProductsByName(query)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar)

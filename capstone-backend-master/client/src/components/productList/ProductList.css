@@ -38,5 +38,14 @@
 /* top | right | bottom | left */
 
 .card {
-  padding-left: 60px;
+  padding: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
+  position: relative;
+}
+
+.main-div {
+  padding-bottom: 40px;
 }
