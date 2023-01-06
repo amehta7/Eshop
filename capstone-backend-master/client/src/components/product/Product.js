@@ -4,12 +4,21 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import './Product.css'
 import { connect } from 'react-redux'
 import ProductList from '../productList/ProductList'
+import Select from 'react-select'
 import {
   fetchProducts,
   fetchCategories,
   setFilter,
   clearFilter,
+  fetchProductsBySort,
 } from '../../store/actions/index'
+
+const options = [
+  { value: 'default', label: 'Default' },
+  { value: 'desc', label: 'Price: High to Low' },
+  { value: 'asc', label: 'Price: Low to High' },
+  { value: 'newest', label: 'Newest' },
+]
 
 const Product = memo(
   ({
@@ -19,26 +28,30 @@ const Product = memo(
     categories,
     onSetFilter,
     onClearFilter,
+    onFetchProductsBySort,
   }) => {
     const [cat, setCat] = useState('All')
-    const [sortType, setSortType] = useState('Select...')
+    const [sortType, setSortType] = useState('')
 
     useEffect(() => {
       onFetchProducts()
       onFetchCategories()
     }, [onFetchProducts, onFetchCategories])
 
-    useEffect(() => {
-      if (sortType === 'default') {
-        products.sort((a, b) => a._id - b._id)
-      } else if (sortType === 'desc') {
-        products.sort((a, b) => a.price - b.price)
-      } else if (sortType === 'asc') {
-        products.sort((a, b) => b.price - a.price)
-      } else if (sortType === 'newest') {
-        products.sort((a, b) => b.updatedAt - a.updatedAt)
+    const handleSelectChange = (selectedOption) => {
+      setSortType(selectedOption)
+      if (selectedOption.value === 'default') {
+        onFetchProductsBySort('_id', 'desc')
+      } else if (selectedOption.value === 'desc') {
+        onFetchProductsBySort('price', 'desc')
+      } else if (selectedOption.value === 'asc') {
+        onFetchProductsBySort('price', 'asc')
+      } else if (selectedOption.value === 'newest') {
+        onFetchProductsBySort('updatedAt', 'desc')
+      } else {
+        onFetchProducts()
       }
-    }, [products, sortType])
+    }
 
     const handleChange = (event, newCat) => {
       setCat(newCat)
@@ -82,20 +95,12 @@ const Product = memo(
         <div className='list'>
           <div className='sort-div'>
             Sort By: <br />
-            <select
-              className='sel-pro-div'
-              defaultValue='Select...'
+            <Select
               value={sortType}
-              onChange={(e) => {
-                setSortType(e.target.value)
-              }}
-              name='Select...'
-            >
-              <option value='default'>Default</option>
-              <option value='desc'>Price: High to Low</option>
-              <option value='asc'>Price: Low to High</option>
-              <option value='newest'>Newest</option>
-            </select>
+              options={options}
+              onChange={handleSelectChange}
+              searchable={false}
+            />
           </div>
           <ProductList products={products} />
         </div>
@@ -120,9 +125,9 @@ const mapDispatchToProps = (dispatch) => {
     onFetchCategories: () => dispatch(fetchCategories()),
     onSetFilter: (category) => dispatch(setFilter(category)),
     onClearFilter: () => dispatch(clearFilter()),
+    onFetchProductsBySort: (sortBy, direction) =>
+      dispatch(fetchProductsBySort(sortBy, direction)),
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product)
-
-//export default Product

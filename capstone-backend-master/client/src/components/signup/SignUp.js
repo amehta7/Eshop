@@ -39,6 +39,30 @@ const Signup = ({ onSignUpUser }) => {
   const [lastName, setLastName] = useState('')
   const [contactNumber, setContactNumber] = useState('')
 
+  const handleSubmit = () => {
+    return fetch('http://localhost:3001/api/v1/users', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        password,
+        contactNumber,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
   return (
     <div className='signupdiv'>
       <Container component='main' maxWidth='xs'>
@@ -57,7 +81,12 @@ const Signup = ({ onSignUpUser }) => {
           <Typography component='h1' variant='h5'>
             Sign up
           </Typography>
-          <Box component='form' noValidate sx={{ mt: 1 }}>
+          <Box
+            component='form'
+            noValidate
+            sx={{ mt: 1 }}
+            onSubmit={handleSubmit}
+          >
             <TextField
               margin='normal'
               required
@@ -134,15 +163,6 @@ const Signup = ({ onSignUpUser }) => {
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
               style={{ backgroundColor: '#3f51b5' }}
-              onClick={() => {
-                onSignUpUser(
-                  firstName,
-                  lastName,
-                  email,
-                  password,
-                  contactNumber
-                )
-              }}
             >
               Sign Up
             </Button>
@@ -174,6 +194,17 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signup)
+// export default connect(mapStateToProps, mapDispatchToProps)(Signup)
+
+export default Signup
 
 //navigate('/')
+// onClick={() => {
+//                 onSignUpUser(
+//                   firstName,
+//                   lastName,
+//                   email,
+//                   password,
+//                   contactNumber
+//                 )
+//               }}

@@ -61,7 +61,8 @@ async function signUp(req, res) {
       password: await bcrypt.hash(req.body.password, salt),
     })
     const response = await user.save()
-    res.send(_.pick(response, ['firstName', 'lastName', 'email', '_id']))
+    // res.send(_.pick(response, ['firstName', 'lastName', 'email', '_id']))
+    res.status(200).send('Success')
   } catch (ex) {
     res.status(400).send(ex.message)
   }

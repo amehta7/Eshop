@@ -59,6 +59,19 @@ export const fetchProductsByName = (query) => (dispatch) =>
       })
     )
 
+export const fetchProductsBySort = (sortBy, direction) => (dispatch) =>
+  fetch(`${baseURL}/products?sortBy=${sortBy}&direction=${direction}`)
+    .then(responseErrorHandler)
+    .then((res) => res.json())
+    .then((products) => {
+      dispatch({ type: 'GET_PRODUCTS_SUCCESS', products })
+    })
+    .catch(() =>
+      dispatch({
+        type: 'GET_PRODUCTS_FAILURE',
+      })
+    )
+
 export const fetchProductById = (id) => (dispatch) =>
   fetch(`${baseURL}/products/${id}`)
     .then(responseErrorHandler)
@@ -127,6 +140,10 @@ export const signUp =
       .then((res) => {
         res.json()
         console.log(res)
+      })
+      .then((data) => {
+        console.log(data.firstName)
+        dispatch({ type: 'SIGNUP_SUCCESS', data })
       })
       .catch((error) => {
         console.log(error)
