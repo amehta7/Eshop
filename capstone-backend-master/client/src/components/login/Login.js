@@ -9,6 +9,9 @@ import TextField from '@mui/material/TextField'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import './Login.css'
+import { connect } from 'react-redux'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { signIn } from '../../store/actions/index'
 
 const Copyright = (props) => {
   return (
@@ -28,7 +31,9 @@ const Copyright = (props) => {
   )
 }
 
-const Login = () => {
+const Login = ({ onSignUser, user }) => {
+  const history = useNavigate()
+  const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -59,7 +64,7 @@ const Login = () => {
           </Typography>
           <Box
             component='form'
-            onSubmit={handleSubmit}
+            onSubmit={() => onSignUser(email, password, history, location)}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -113,4 +118,17 @@ const Login = () => {
   )
 }
 
-export default Login
+const mapStateToProps = (state) => {
+  return {
+    user: state.users.user,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSignUser: (email, password, history, location) =>
+      dispatch(signIn(email, password, history, location)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

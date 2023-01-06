@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid'
+
 const initialState = {
   products: [],
   categories: [],
@@ -30,6 +32,16 @@ const products = (state = initialState, action) => {
       return {
         ...state,
         filter: null,
+      }
+    }
+
+    case 'DELETE_PRODUCTS_SUCCESS': {
+      return {
+        ...state,
+        // products: [
+        //   ...state.products.filter((product) => product._id !== action._id),
+        // ],
+        products: action.products,
       }
     }
 

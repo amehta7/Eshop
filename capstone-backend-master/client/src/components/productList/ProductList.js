@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
@@ -8,15 +8,15 @@ import CreateIcon from '@mui/icons-material/Create'
 import './ProductList.css'
 import DeleteProduct from '../deleteProduct/DeleteProduct'
 
-const ProductList = ({ products }) => {
+const ProductList = memo(({ products }) => {
   return (
     <React.Fragment>
       <div className='card'>
         {products &&
-          products.map(({ id, name, price, imageURL, description }) => {
+          products.map(({ _id, name, price, imageURL, description }) => {
             return (
-              <div key={id} className='main-div'>
-                <Card sx={{ maxWidth: 345 }} key={id}>
+              <div key={_id} className='main-div'>
+                <Card sx={{ maxWidth: 345 }} key={_id}>
                   <CardMedia
                     className='imageCard'
                     component='img'
@@ -38,8 +38,8 @@ const ProductList = ({ products }) => {
                     <Button
                       size='small'
                       variant='contained'
-                      href='/product/2'
                       style={{ backgroundColor: '#3f51b5' }}
+                      href={`/products/${_id}`}
                     >
                       BUY
                     </Button>
@@ -61,6 +61,6 @@ const ProductList = ({ products }) => {
       </div>
     </React.Fragment>
   )
-}
+})
 
 export default ProductList

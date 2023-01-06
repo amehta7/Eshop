@@ -7,7 +7,7 @@
 
 .product-details > .namediv {
   position: relative;
-  left: 400px;
+  left: 550px;
   top: 40px;
   font-size: 1.4rem;
   margin-bottom: 2px;
@@ -35,23 +35,23 @@
 
 .product-details > h3 {
   position: relative;
-  left: 400px;
+  left: 550px;
   top: 43px;
   margin-top: 2px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .product-details > p {
   position: relative;
-  left: 400px;
+  left: 550px;
   top: 50px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .product-details > .price {
   color: red;
   position: relative;
-  left: 400px;
+  left: 550px;
   font-size: 18px;
   font-weight: bold;
   top: 60px;
@@ -59,15 +59,21 @@
 
 .product-details > img {
   position: absolute;
-  top: 30px;
+  top: 70px;
   left: 100px;
-  width: 200px;
+  width: 400px;
 }
 
 .product-details > .details {
   position: relative;
-  left: 400px;
-  top: 50px;
+  left: 550px;
+  top: 60px;
   margin-top: 2px;
   font-size: 1rem;
+}
+
+.err-div {
+  top: 40px;
+  color: red;
+  padding-left: 330px;
 }

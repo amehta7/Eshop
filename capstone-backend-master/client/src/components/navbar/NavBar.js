@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, memo } from 'react'
 import './NavBar.css'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -10,7 +10,7 @@ import { styled, alpha } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchProductsByName } from '../../store/actions/index'
+import { fetchProductsByName, fetchProducts } from '../../store/actions/index'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -54,12 +54,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-const NavBar = ({ onFetchProductsByName, products }) => {
+const NavBar = memo(({ onFetchProductsByName, products, onFetchProducts }) => {
   const [query, setQuery] = useState('')
 
   useEffect(() => {
-    onFetchProductsByName(query)
-  }, [onFetchProductsByName, query])
+    query ? onFetchProductsByName(query) : onFetchProducts()
+  }, [query, onFetchProductsByName, onFetchProducts])
 
   return (
     <AppBar position='fixed' style={{ backgroundColor: '#3f51b5' }}>
@@ -81,25 +81,25 @@ const NavBar = ({ onFetchProductsByName, products }) => {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              onClick={(e) => setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder='Search…'
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
         </div>
         <div className='nav-list1'>
-          <Link to='/'>
-            <Button
-              color='inherit'
-              style={{
-                textTransform: 'none',
-                color: '#fff',
-                textDecoration: 'underline solid white',
-              }}
-            >
-              Home
-            </Button>
-          </Link>
+          <Button
+            href='/'
+            color='inherit'
+            style={{
+              textTransform: 'none',
+              color: '#fff',
+              textDecoration: 'underline solid white',
+            }}
+          >
+            Home
+          </Button>
+
           <Link to='/addProduct'>
             <Button
               color='inherit'
@@ -151,7 +151,7 @@ const NavBar = ({ onFetchProductsByName, products }) => {
       </Toolbar>
     </AppBar>
   )
-}
+})
 
 const mapStateToProps = (state) => {
   return {
@@ -162,6 +162,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onFetchProductsByName: (query) => dispatch(fetchProductsByName(query)),
+    onFetchProducts: () => dispatch(fetchProducts()),
   }
 }
 

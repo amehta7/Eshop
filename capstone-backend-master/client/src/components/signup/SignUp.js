@@ -9,6 +9,9 @@ import TextField from '@mui/material/TextField'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import './SignUp.css'
+import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { signUp } from '../../store/actions/index'
 
 const Copyright = (props) => {
   return (
@@ -28,33 +31,13 @@ const Copyright = (props) => {
   )
 }
 
-const Signup = () => {
+const Signup = ({ onSignUpUser }) => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [fname, setFname] = useState('')
-  const [lname, setLname] = useState('')
-  const [cnumber, setCnumber] = useState('')
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(
-      'Email:',
-      email,
-      'Password: ',
-      password,
-      'Fname:',
-      fname,
-      'Lname:',
-      lname,
-      'Contactnumber:',
-      cnumber
-    )
-    setEmail('')
-    setPassword('')
-    setFname('')
-    setLname('')
-    setCnumber('')
-  }
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [contactNumber, setContactNumber] = useState('')
 
   return (
     <div className='signupdiv'>
@@ -74,12 +57,7 @@ const Signup = () => {
           <Typography component='h1' variant='h5'>
             Sign up
           </Typography>
-          <Box
-            component='form'
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component='form' noValidate sx={{ mt: 1 }}>
             <TextField
               margin='normal'
               required
@@ -89,8 +67,8 @@ const Signup = () => {
               name='firstname'
               autoComplete='firstname'
               autoFocus
-              value={fname}
-              onChange={(e) => setFname(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
             />
             <TextField
               margin='normal'
@@ -101,8 +79,8 @@ const Signup = () => {
               name='lastname'
               autoComplete='lastname'
               autoFocus
-              value={lname}
-              onChange={(e) => setLname(e.target.value)}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             />
             <TextField
               margin='normal'
@@ -146,8 +124,8 @@ const Signup = () => {
               label='Contact Number'
               id='contactNumber'
               autoFocus
-              value={cnumber}
-              onChange={(e) => setCnumber(e.target.value)}
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
             />
             <Button
               className='btn'
@@ -156,6 +134,15 @@ const Signup = () => {
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
               style={{ backgroundColor: '#3f51b5' }}
+              onClick={() => {
+                onSignUpUser(
+                  firstName,
+                  lastName,
+                  email,
+                  password,
+                  contactNumber
+                )
+              }}
             >
               Sign Up
             </Button>
@@ -174,4 +161,19 @@ const Signup = () => {
   )
 }
 
-export default Signup
+const mapStateToProps = (state) => {
+  return {
+    user: state.users.user,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSignUpUser: (firstName, lastName, email, password, contactNumber) =>
+      dispatch(signUp(firstName, lastName, email, password, contactNumber)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup)
+
+//navigate('/')
