@@ -21,7 +21,7 @@ const DeleteProduct = ({ name }) => {
   }
 
   const delMsg = () => {
-    toast.success(`Product name deleted successfully`, {
+    toast.success(`Product ${name} deleted successfully`, {
       position: toast.POSITION.TOP_RIGHT,
     })
   }

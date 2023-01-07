@@ -75,7 +75,9 @@ export const fetchProductsBySort = (sortBy, direction) => (dispatch) =>
 export const fetchProductById = (id) => (dispatch) =>
   fetch(`${baseURL}/products/${id}`)
     .then(responseErrorHandler)
-    .then((res) => res.json())
+    .then((res) => {
+      res.json()
+    })
     .then((products) => {
       dispatch({ type: 'GET_PRODUCTS_SUCCESS', products })
     })
@@ -120,36 +122,41 @@ export const signIn = (email, password, history, location) => (dispatch) =>
       dispatch({ type: 'SIGNIN_FAILURE' })
     })
 
-export const signUp =
-  (firstName, lastName, email, password, contactNumber) => (dispatch) =>
-    fetch(`${baseURL}/users`, {
-      method: 'POST',
-      cache: 'no-cache',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        email,
-        password,
-        contactNumber,
-      }),
-    })
-      .then(responseErrorHandler)
-      .then((res) => {
-        res.json()
-        console.log(res)
-      })
-      .then((data) => {
-        console.log(data.firstName)
-        dispatch({ type: 'SIGNUP_SUCCESS', data })
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+const doSignUp = async (
+  firstName,
+  lastName,
+  email,
+  password,
+  contactNumber
+) => {
+  let response = await fetch(`${baseURL}/users`, {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      email,
+      password,
+      contactNumber,
+    }),
+  })
+  let data = await response.json()
+  console.log(data)
+  return data
+}
 
-// .then((user) => {
-//   dispatch({ type: 'SIGNUP_SUCCESS', user })
-// })
-// .catch(() => dispatch({ type: 'SIGNUP_FAILURE' }))
+export const signUp =
+  (firstName, lastName, email, password, contactNumber) => (dispatch) => {
+    doSignUp(firstName, lastName, email, password, contactNumber)
+      .then((user) => {
+        console.log(user)
+        dispatch({ type: 'SIGNUP_SUCCESS', user })
+      })
+      .catch(() => {
+        dispatch({ type: 'SIGNUP_FAILURE' })
+      })
+  }

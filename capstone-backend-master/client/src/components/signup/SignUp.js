@@ -31,37 +31,16 @@ const Copyright = (props) => {
   )
 }
 
-const Signup = ({ onSignUpUser }) => {
+const Signup = ({ onSignUpUser, user, error }) => {
   const navigate = useNavigate()
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [contactNumber, setContactNumber] = useState('')
-
-  const handleSubmit = () => {
-    return fetch('http://localhost:3001/api/v1/users', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        email,
-        password,
-        contactNumber,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
+  const [rePassword, setRePassword] = useState('')
+  const [submitted, setSubmitted] = useState(false)
 
   return (
     <div className='signupdiv'>
@@ -81,12 +60,7 @@ const Signup = ({ onSignUpUser }) => {
           <Typography component='h1' variant='h5'>
             Sign up
           </Typography>
-          <Box
-            component='form'
-            noValidate
-            sx={{ mt: 1 }}
-            onSubmit={handleSubmit}
-          >
+          <Box component='form' noValidate sx={{ mt: 1 }}>
             <TextField
               margin='normal'
               required
@@ -99,6 +73,14 @@ const Signup = ({ onSignUpUser }) => {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
+            {submitted && !firstName && (
+              <div style={{ color: 'red' }}>First Name is required</div>
+            )}
+            {submitted && firstName.length < 5 && (
+              <div style={{ color: 'red' }}>
+                First Name must be at least 5 characters long
+              </div>
+            )}
             <TextField
               margin='normal'
               required
@@ -111,6 +93,14 @@ const Signup = ({ onSignUpUser }) => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
+            {submitted && !lastName && (
+              <div style={{ color: 'red' }}>Last Name is required</div>
+            )}
+            {submitted && lastName.length < 5 && (
+              <div style={{ color: 'red' }}>
+                Last Name must be at least 5 characters long
+              </div>
+            )}
             <TextField
               margin='normal'
               required
@@ -123,6 +113,15 @@ const Signup = ({ onSignUpUser }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {submitted && !email && (
+              <div style={{ color: 'red' }}>Email is required</div>
+            )}
+            <br />
+            {submitted && !regex.test(email) && (
+              <div style={{ color: 'red' }}>
+                This is not a valid email format!
+              </div>
+            )}
             <TextField
               margin='normal'
               required
@@ -135,6 +134,14 @@ const Signup = ({ onSignUpUser }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {submitted && !password && (
+              <div style={{ color: 'red' }}>Password is required</div>
+            )}
+            {submitted && password.length < 5 && (
+              <div style={{ color: 'red' }}>
+                Password must be at least 5 characters long
+              </div>
+            )}
             <TextField
               margin='normal'
               required
@@ -144,7 +151,17 @@ const Signup = ({ onSignUpUser }) => {
               type='password'
               id='confirmpassword'
               autoFocus
+              value={rePassword}
+              onChange={(e) => setRePassword(e.target.value)}
             />
+            {submitted && !rePassword && (
+              <div style={{ color: 'red' }}>Confirm Password is required</div>
+            )}
+            {submitted && password !== rePassword && (
+              <div style={{ color: 'red' }}>
+                Password and ConfirmPassword are not match
+              </div>
+            )}
             <TextField
               margin='normal'
               required
@@ -156,16 +173,60 @@ const Signup = ({ onSignUpUser }) => {
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
             />
+            {submitted && !contactNumber && (
+              <div style={{ color: 'red' }}>Contact Number is required</div>
+            )}
+            {submitted && contactNumber.length < 10 && (
+              <div style={{ color: 'red' }}>
+                Contact Number length must be at least 10 characters long
+              </div>
+            )}
             <Button
               className='btn'
-              type='submit'
+              type='button'
               fullWidth
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
               style={{ backgroundColor: '#3f51b5' }}
+              onClick={() => {
+                return (
+                  <React.Fragment>
+                    {!error &&
+                      firstName &&
+                      lastName &&
+                      email &&
+                      password &&
+                      rePassword &&
+                      password === rePassword &&
+                      contactNumber &&
+                      onSignUpUser(
+                        firstName,
+                        lastName,
+                        email,
+                        password,
+                        contactNumber
+                      )}
+                    {!error ? setSubmitted(true) : setSubmitted(false)}
+                  </React.Fragment>
+                )
+              }}
+              href={
+                !error &&
+                firstName &&
+                lastName &&
+                email &&
+                password &&
+                rePassword &&
+                password === rePassword &&
+                contactNumber &&
+                submitted
+                  ? '/'
+                  : '#'
+              }
             >
               Sign Up
             </Button>
+
             <Grid container justifyContent='flex-end'>
               <Grid item>
                 <Link href='/login' variant='body2' color='#53178f'>
@@ -175,6 +236,10 @@ const Signup = ({ onSignUpUser }) => {
             </Grid>
           </Box>
         </Box>
+        <br />
+        <div>
+          {error && <div style={{ color: 'red' }}>'Error in form fill-up'</div>}
+        </div>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </div>
@@ -184,6 +249,7 @@ const Signup = ({ onSignUpUser }) => {
 const mapStateToProps = (state) => {
   return {
     user: state.users.user,
+    error: state.errors.error,
   }
 }
 
@@ -194,17 +260,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Signup)
-
-export default Signup
+export default connect(mapStateToProps, mapDispatchToProps)(Signup)
 
 //navigate('/')
-// onClick={() => {
-//                 onSignUpUser(
-//                   firstName,
-//                   lastName,
-//                   email,
-//                   password,
-//                   contactNumber
-//                 )
-//               }}
+//href={!error && submitted ? '/' : '#'}

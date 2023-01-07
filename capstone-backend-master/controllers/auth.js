@@ -40,9 +40,9 @@ async function signUp(req, res) {
     return res.status(400).send(`Bad Request ${error}`)
   }
 
-  let user = await User.findOne({ email: req.body.email })
+  let userFound = await User.findOne({ email: req.body.email })
 
-  if (user) {
+  if (userFound) {
     return res
       .status(400)
       .send('Try any other email, this email is already registered!')
@@ -56,13 +56,15 @@ async function signUp(req, res) {
 
   try {
     const salt = await bcrypt.genSalt(10)
-    const user = new User({
+    const newUser = new User({
       ...req.body,
       password: await bcrypt.hash(req.body.password, salt),
     })
-    const response = await user.save()
+    const user = await newUser.save()
+
+    res.send(user)
     // res.send(_.pick(response, ['firstName', 'lastName', 'email', '_id']))
-    res.status(200).send('Success')
+    // res.status(200).json({ msg: 'success msg' })
   } catch (ex) {
     res.status(400).send(ex.message)
   }
