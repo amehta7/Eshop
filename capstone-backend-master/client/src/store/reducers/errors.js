@@ -46,6 +46,12 @@ const errors = (state = initialState, action) => {
       }
     }
 
+    case 'SIGNUP_SUCCESS': {
+      return {
+        error: false,
+      }
+    }
+
     case 'DELETE_PRODUCTS_SUCCESS': {
       return {
         error: false,

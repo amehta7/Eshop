@@ -204,25 +204,13 @@ const Signup = ({ onSignUpUser, user, error }) => {
                         lastName,
                         email,
                         password,
-                        contactNumber
+                        contactNumber,
+                        navigate
                       )}
-                    {!error ? setSubmitted(true) : setSubmitted(false)}
+                    {error ? setSubmitted(false) : setSubmitted(true)}
                   </React.Fragment>
                 )
               }}
-              href={
-                !error &&
-                firstName &&
-                lastName &&
-                email &&
-                password &&
-                rePassword &&
-                password === rePassword &&
-                contactNumber &&
-                submitted
-                  ? '/'
-                  : '#'
-              }
             >
               Sign Up
             </Button>
@@ -255,12 +243,32 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSignUpUser: (firstName, lastName, email, password, contactNumber) =>
-      dispatch(signUp(firstName, lastName, email, password, contactNumber)),
+    onSignUpUser: (
+      firstName,
+      lastName,
+      email,
+      password,
+      contactNumber,
+      navigate
+    ) =>
+      dispatch(
+        signUp(firstName, lastName, email, password, contactNumber, navigate)
+      ),
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup)
 
-//navigate('/')
-//href={!error && submitted ? '/' : '#'}
+// href={
+//                 !error &&
+//                 firstName &&
+//                 lastName &&
+//                 email &&
+//                 password &&
+//                 rePassword &&
+//                 password === rePassword &&
+//                 contactNumber &&
+//                 submitted
+//                   ? '/'
+//                   : '#'
+//               }

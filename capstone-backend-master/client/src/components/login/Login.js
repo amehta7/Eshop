@@ -31,18 +31,13 @@ const Copyright = (props) => {
   )
 }
 
-const Login = ({ onSignUser, user }) => {
-  const history = useNavigate()
+const Login = ({ onSignUser, user, error }) => {
+  const navigate = useNavigate()
   const location = useLocation()
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Email:', email, 'Password: ', password)
-    setEmail('')
-    setPassword('')
-  }
+  const [submitted, setSubmitted] = useState(false)
 
   return (
     <div className='logindiv'>
@@ -62,12 +57,7 @@ const Login = ({ onSignUser, user }) => {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
-          <Box
-            component='form'
-            onSubmit={() => onSignUser(email, password, history, location)}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component='form' noValidate sx={{ mt: 1 }}>
             <TextField
               margin='normal'
               required
@@ -80,6 +70,15 @@ const Login = ({ onSignUser, user }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {submitted && !email && (
+              <div style={{ color: 'red' }}>Email is required</div>
+            )}
+            <br />
+            {submitted && !regex.test(email) && (
+              <div style={{ color: 'red' }}>
+                This is not a valid email format!
+              </div>
+            )}
             <TextField
               margin='normal'
               required
@@ -93,13 +92,32 @@ const Login = ({ onSignUser, user }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {submitted && !password && (
+              <div style={{ color: 'red' }}>Password is required</div>
+            )}
+            {submitted && password.length < 5 && (
+              <div style={{ color: 'red' }}>
+                Password must be at least 5 characters long
+              </div>
+            )}
             <Button
               className='btn'
-              type='submit'
+              type='button'
               fullWidth
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
               style={{ backgroundColor: '#3f51b5' }}
+              onClick={() => {
+                return (
+                  <React.Fragment>
+                    {!error &&
+                      email &&
+                      password &&
+                      onSignUser(email, password, navigate, location)}
+                    {!error ? setSubmitted(true) : null}
+                  </React.Fragment>
+                )
+              }}
             >
               Sign In
             </Button>
@@ -112,6 +130,10 @@ const Login = ({ onSignUser, user }) => {
             </Grid>
           </Box>
         </Box>
+        <br />
+        {error ? (
+          <div style={{ color: 'red' }}>Incorrect username/password</div>
+        ) : null}
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </div>
@@ -121,13 +143,14 @@ const Login = ({ onSignUser, user }) => {
 const mapStateToProps = (state) => {
   return {
     user: state.users.user,
+    error: state.errors.error,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSignUser: (email, password, history, location) =>
-      dispatch(signIn(email, password, history, location)),
+    onSignUser: (email, password, navigate, location) =>
+      dispatch(signIn(email, password, navigate, location)),
   }
 }
 

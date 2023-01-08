@@ -10,7 +10,11 @@ import { styled, alpha } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchProductsByName, fetchProducts } from '../../store/actions/index'
+import {
+  fetchProductsByName,
+  fetchProducts,
+  signOut,
+} from '../../store/actions/index'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -54,108 +58,122 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }))
 
-const NavBar = memo(({ onFetchProductsByName, products, onFetchProducts }) => {
-  const [query, setQuery] = useState('')
+const NavBar = memo(
+  ({ onFetchProductsByName, products, onFetchProducts, user, onSignOut }) => {
+    const [query, setQuery] = useState('')
 
-  useEffect(() => {
-    query ? onFetchProductsByName(query) : onFetchProducts()
-  }, [query, onFetchProductsByName, onFetchProducts])
+    useEffect(() => {
+      query ? onFetchProductsByName(query) : onFetchProducts()
+    }, [query, onFetchProductsByName, onFetchProducts])
 
-  return (
-    <AppBar position='fixed' style={{ backgroundColor: '#3f51b5' }}>
-      <Toolbar>
-        <div>
-          <ShoppingCartIcon style={{ fontSize: 29 }} />
-        </div>
-        <Typography
-          variant='h6'
-          component='div'
-          sx={{ flexGrow: 1 }}
-          style={{ margin: '10px' }}
-        >
-          upGrad E-Shop
-        </Typography>
-        <div className='search'>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder='Search…'
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-        </div>
-        <div className='nav-list1'>
-          <Button
-            href='/'
-            color='inherit'
-            style={{
-              textTransform: 'none',
-              color: '#fff',
-              textDecoration: 'underline solid white',
-            }}
+    return (
+      <AppBar position='fixed' style={{ backgroundColor: '#3f51b5' }}>
+        <Toolbar>
+          <div>
+            <ShoppingCartIcon style={{ fontSize: 29 }} />
+          </div>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1 }}
+            style={{ margin: '10px' }}
           >
-            Home
-          </Button>
-
-          <Link to='/addProduct'>
-            <Button
-              color='inherit'
-              style={{
-                textTransform: 'none',
-                color: '#fff',
-                textDecoration: 'underline solid white',
-              }}
-            >
-              Add Product
-            </Button>
-          </Link>
-          <Link to='/login'>
-            <Button
-              color='inherit'
-              style={{
-                textTransform: 'none',
-                color: '#fff',
-                textDecoration: 'underline solid white',
-              }}
-            >
-              Login
-            </Button>
-          </Link>
-          <Link to='/signup'>
-            <Button
-              color='inherit'
-              style={{
-                textTransform: 'none',
-                color: '#fff',
-                textDecoration: 'underline solid white',
-              }}
-            >
-              Sign Up
-            </Button>
-          </Link>
-
-          <Button
-            href='/'
-            style={{
-              color: 'white',
-              backgroundColor: '#e50c6b',
-              textDecoration: 'none',
-            }}
-          >
-            LOGOUT
-          </Button>
-        </div>
-      </Toolbar>
-    </AppBar>
-  )
-})
+            upGrad E-Shop
+          </Typography>
+          {user ? (
+            <React.Fragment>
+              <div className='search'>
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder='Search…'
+                    inputProps={{ 'aria-label': 'search' }}
+                  />
+                </Search>
+              </div>
+              <div className='nav-list1'>
+                <Button
+                  href='/products'
+                  color='inherit'
+                  style={{
+                    textTransform: 'none',
+                    color: '#fff',
+                    textDecoration: 'underline solid white',
+                  }}
+                >
+                  Home
+                </Button>
+                {user.role === 'admin' ? (
+                  <Link to='/addProduct'>
+                    <Button
+                      color='inherit'
+                      style={{
+                        textTransform: 'none',
+                        color: '#fff',
+                        textDecoration: 'underline solid white',
+                      }}
+                    >
+                      Add Product
+                    </Button>
+                  </Link>
+                ) : null}
+                <Link to='/' style={{ textDecoration: 'none' }}>
+                  <Button
+                    style={{
+                      color: 'white',
+                      backgroundColor: '#e50c6b',
+                      textDecoration: 'none',
+                    }}
+                    onClick={() => onSignOut()}
+                  >
+                    LOGOUT
+                  </Button>
+                </Link>
+              </div>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div className='nav-list1'>
+                <Link to='/login'>
+                  <Button
+                    color='inherit'
+                    style={{
+                      textTransform: 'none',
+                      color: '#fff',
+                      textDecoration: 'underline solid white',
+                    }}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link to='/signup'>
+                  <Button
+                    color='inherit'
+                    style={{
+                      textTransform: 'none',
+                      color: '#fff',
+                      textDecoration: 'underline solid white',
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            </React.Fragment>
+          )}
+        </Toolbar>
+      </AppBar>
+    )
+  }
+)
 
 const mapStateToProps = (state) => {
   return {
     products: state.products.products,
+    user: state.users.user,
   }
 }
 
@@ -163,6 +181,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onFetchProductsByName: (query) => dispatch(fetchProductsByName(query)),
     onFetchProducts: () => dispatch(fetchProducts()),
+    onSignOut: () => dispatch(signOut()),
   }
 }
 

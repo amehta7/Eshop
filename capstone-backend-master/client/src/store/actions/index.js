@@ -72,13 +72,16 @@ export const fetchProductsBySort = (sortBy, direction) => (dispatch) =>
       })
     )
 
+const getProById = async (id) => {
+  let response = await fetch(`${baseURL}/products/${id}`)
+  let data = await response.json()
+  console.log(data)
+  return data
+}
 export const fetchProductById = (id) => (dispatch) =>
-  fetch(`${baseURL}/products/${id}`)
-    .then(responseErrorHandler)
-    .then((res) => {
-      res.json()
-    })
+  getProById(id)
     .then((products) => {
+      console.log(products)
       dispatch({ type: 'GET_PRODUCTS_SUCCESS', products })
     })
     .catch(() =>
@@ -100,23 +103,33 @@ export const deleteProductById = (id) => (dispatch) =>
       })
     )
 
-export const signIn = (email, password, history, location) => (dispatch) =>
-  fetch(`${baseURL}/auth`, {
+const doSignIn = async (email, password) => {
+  let response = await fetch(`${baseURL}/auth`, {
     method: 'POST',
     cache: 'no-cache',
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({
+      email,
+      password,
+    }),
   })
-    .then(responseErrorHandler)
-    .then((res) => res.json())
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+export const signIn = (email, password, navigate, location) => (dispatch) =>
+  doSignIn(email, password)
     .then((user) => {
+      console.log(user)
       dispatch({ type: 'SIGNIN_SUCCESS', user })
       const { from } = (location && location.state) || {
-        from: { pathname: '/' },
+        from: { pathname: '/products' },
       }
-      history.replace(from)
+      navigate(from)
     })
     .catch(() => {
       dispatch({ type: 'SIGNIN_FAILURE' })
@@ -150,13 +163,27 @@ const doSignUp = async (
 }
 
 export const signUp =
-  (firstName, lastName, email, password, contactNumber) => (dispatch) => {
+  (firstName, lastName, email, password, contactNumber, navigate) =>
+  (dispatch) => {
     doSignUp(firstName, lastName, email, password, contactNumber)
       .then((user) => {
         console.log(user)
         dispatch({ type: 'SIGNUP_SUCCESS', user })
+        navigate('/products')
       })
       .catch(() => {
         dispatch({ type: 'SIGNUP_FAILURE' })
       })
   }
+
+export const initUserState = () => {
+  return {
+    type: 'INIT_SUCCESS',
+  }
+}
+
+export const signOut = () => {
+  return {
+    type: 'SIGNOUT_SUCCESS',
+  }
+}

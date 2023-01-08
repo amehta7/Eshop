@@ -7,8 +7,9 @@ import Button from '@mui/material/Button'
 import CreateIcon from '@mui/icons-material/Create'
 import './ProductList.css'
 import DeleteProduct from '../deleteProduct/DeleteProduct'
+import { connect } from 'react-redux'
 
-const ProductList = memo(({ products }) => {
+const ProductList = memo(({ products, user }) => {
   return (
     <React.Fragment>
       <div className='card'>
@@ -43,16 +44,18 @@ const ProductList = memo(({ products }) => {
                     >
                       BUY
                     </Button>
-                    <div className='icon'>
-                      <div className='modify-div'>
-                        <Button color='inherit' href='/modifyProduct'>
-                          <CreateIcon size='small' />
-                        </Button>
+                    {user && user.role === 'admin' ? (
+                      <div className='icon'>
+                        <div className='modify-div'>
+                          <Button color='inherit' href='/modifyProduct'>
+                            <CreateIcon size='small' />
+                          </Button>
+                        </div>
+                        <div className='del-div'>
+                          <DeleteProduct name={name} />
+                        </div>
                       </div>
-                      <div className='del-div'>
-                        <DeleteProduct name={name} />
-                      </div>
-                    </div>
+                    ) : null}
                   </CardActions>
                 </Card>
               </div>
@@ -63,4 +66,10 @@ const ProductList = memo(({ products }) => {
   )
 })
 
-export default ProductList
+const mapStateToProps = (state) => {
+  return {
+    user: state.users.user,
+  }
+}
+
+export default connect(mapStateToProps, null)(ProductList)

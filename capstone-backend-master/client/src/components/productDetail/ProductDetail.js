@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom'
 
 const ProductDetail = memo(({ products, onFetchProductById }) => {
   const [qty, setQty] = useState('1')
-  const [submitted, setSubmitted] = useState(false)
+  const [orderbtnClick, setOrderbtnClick] = useState(false)
 
   let { id } = useParams()
 
@@ -59,9 +59,9 @@ const ProductDetail = memo(({ products, onFetchProductById }) => {
               width: '150px',
             }}
             onClick={() => {
-              qty !== '' ? setSubmitted(true) : setSubmitted(false)
+              qty !== '' ? setOrderbtnClick(true) : setOrderbtnClick(false)
             }}
-            href={submitted ? '/createorder' : '#'}
+            href={orderbtnClick ? '/createorder' : '#'}
           >
             PLACE ORDER
           </Button>

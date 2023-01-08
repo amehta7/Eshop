@@ -16,6 +16,14 @@ const users = (state = initialState, action) => {
       }
     }
 
+    case 'INIT_SUCCESS': {
+      return {}
+    }
+
+    case 'SIGNOUT_SUCCESS': {
+      return {}
+    }
+
     default: {
       return state
     }
