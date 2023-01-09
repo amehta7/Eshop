@@ -1,30 +1,30 @@
-import React from 'react'
+import React, { memo } from 'react'
 import './CartItem.css'
+import { useSelector } from 'react-redux'
 
-const CartItem = () => {
+const CartItem = memo(() => {
+  const { order, quantity } = useSelector((state) => state.orders)
+
   return (
     <div className='cartdiv'>
       <div className='img-div'>
-        <img
-          src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgaYmmrvorlDtfO54XH9ZjZRTN6twggjxr0A&usqp=CAU'
-          alt='PhoneImage'
-        />
+        <img src={order.imageURL} alt={order.name} />
       </div>
       <div className='detail-div'>
-        <h2>Name </h2>
+        <h2>{order.name} </h2>
         <p>
-          Quantity : <b>1</b>
+          Quantity : <b>{quantity}</b>
         </p>
         <p>
-          Category: <b>Electronics</b>{' '}
+          Category: <b>{order.category}</b>{' '}
         </p>
         <p>
-          <i>this is another desc</i>
+          <i>{order.description}</i>
         </p>
-        <p className='price'> Total Price : $ 1000</p>
+        <p className='price'> Total Price : $ {order.price}</p>
       </div>
     </div>
   )
-}
+})
 
 export default CartItem

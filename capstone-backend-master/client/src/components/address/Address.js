@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import Select from 'react-select'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -6,19 +6,27 @@ import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import './Address.css'
+import { connect } from 'react-redux'
+import { addAddress } from '../../store/actions/index'
 
-const Address = () => {
+const Address = memo(({ onAddAddress, address, error }) => {
   const [name, setName] = useState('')
-  const [cnumber, setCnumber] = useState('')
+  const [contactNumber, setContactNumber] = useState('')
   const [street, setStreet] = useState('')
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
   const [landmark, setLandmark] = useState('')
-  const [zcode, setZcode] = useState('')
+  const [zipCode, setZipCode] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Hi')
+    setName('')
+    setContactNumber('')
+    setStreet('')
+    setCity('')
+    setState('')
+    setLandmark('')
+    setZipCode('')
   }
 
   return (
@@ -70,8 +78,8 @@ const Address = () => {
                   name='cnumber'
                   autoComplete='number'
                   autoFocus
-                  value={cnumber}
-                  onChange={(e) => setCnumber(e.target.value)}
+                  value={contactNumber}
+                  onChange={(e) => setContactNumber(e.target.value)}
                 />
                 <TextField
                   margin='normal'
@@ -129,16 +137,27 @@ const Address = () => {
                   name='zcode'
                   autoComplete='Zip Code'
                   autoFocus
-                  value={zcode}
-                  onChange={(e) => setZcode(e.target.value)}
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
                 />
                 <Button
                   className='btn'
-                  type='submit'
+                  type='button'
                   fullWidth
                   variant='contained'
                   sx={{ mt: 3, mb: 2 }}
                   style={{ backgroundColor: '#3f51b5' }}
+                  onClick={() =>
+                    onAddAddress(
+                      name,
+                      contactNumber,
+                      street,
+                      city,
+                      state,
+                      landmark,
+                      zipCode
+                    )
+                  }
                 >
                   Save Address
                 </Button>
@@ -149,6 +168,30 @@ const Address = () => {
       </div>
     </div>
   )
+})
+
+const mapStateToProps = (state) => {
+  return {
+    address: state.addresses.address,
+    error: state.errors.error,
+  }
 }
 
-export default Address
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddAddress: (
+      name,
+      contactNumber,
+      street,
+      city,
+      state,
+      landmark,
+      zipCode
+    ) =>
+      dispatch(
+        addAddress(name, contactNumber, street, city, state, landmark, zipCode)
+      ),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Address)

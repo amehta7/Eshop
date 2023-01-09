@@ -3,11 +3,12 @@ import './ProductDetail.css'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { connect } from 'react-redux'
-import { fetchProductById } from '../../store/actions/index'
+import { fetchProductById, addToCart } from '../../store/actions/index'
 import { useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-const ProductDetail = memo(({ products, onFetchProductById }) => {
-  const [qty, setQty] = useState('1')
+const ProductDetail = memo(({ products, onFetchProductById, onAddToCart }) => {
+  const [qty, setQty] = useState(1)
   const [orderbtnClick, setOrderbtnClick] = useState(false)
 
   let { id } = useParams()
@@ -43,28 +44,33 @@ const ProductDetail = memo(({ products, onFetchProductById }) => {
             name='quantity'
             autoComplete='quantity'
             style={{ width: '300px', height: '0px' }}
-            onChange={(e) => setQty(e.target.value)}
+            onChange={(e) => setQty(Number(e.target.value))}
           />
 
           {!qty && (
             <div className='err-div'>Please fill the Quantity Field</div>
           )}
           <br />
-          <Button
-            size='small'
-            variant='contained'
-            style={{
-              backgroundColor: '#3f51b5',
-              top: '70px',
-              width: '150px',
-            }}
-            onClick={() => {
-              qty !== '' ? setOrderbtnClick(true) : setOrderbtnClick(false)
-            }}
-            href={orderbtnClick ? '/createorder' : '#'}
+          <Link
+            to={qty !== '' && orderbtnClick ? '/createorder' : '#'}
+            style={{ textDecoration: 'none' }}
           >
-            PLACE ORDER
-          </Button>
+            <Button
+              size='small'
+              variant='contained'
+              style={{
+                backgroundColor: '#3f51b5',
+                top: '70px',
+                width: '150px',
+              }}
+              onClick={() => {
+                onAddToCart(products, qty)
+                setOrderbtnClick(true)
+              }}
+            >
+              PLACE ORDER
+            </Button>
+          </Link>
         </div>
       </div>
     </React.Fragment>
@@ -74,13 +80,28 @@ const ProductDetail = memo(({ products, onFetchProductById }) => {
 const mapStateToProps = (state) => {
   return {
     products: state.products.products,
+    order: state.orders.order,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onFetchProductById: (id) => dispatch(fetchProductById(id)),
+    onAddToCart: (products, quantity) =>
+      dispatch(addToCart(products, quantity)),
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)
+
+// onClick={() => {
+//               return (
+//                 <React.Fragment>
+//                   {qty && onAddToCart(products)}
+//                   {qty !== ''
+//                     ? setOrderbtnClick(true)
+//                     : setOrderbtnClick(false)}
+//                 </React.Fragment>
+//               )
+//             }}
+// href={orderbtnClick ? '/createorder' : '#'}

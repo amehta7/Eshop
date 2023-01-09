@@ -30,6 +30,19 @@ const errors = (state = initialState, action) => {
         error: true,
       }
     }
+
+    case 'ADD_TO_CART_FAILURE': {
+      return {
+        error: true,
+      }
+    }
+
+    case 'ADD_ADDRESS_FAILURE': {
+      return {
+        error: true,
+      }
+    }
+
     case 'GET_PRODUCTS_SUCCESS': {
       return {
         error: false,

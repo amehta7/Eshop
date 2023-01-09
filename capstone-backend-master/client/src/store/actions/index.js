@@ -1,4 +1,5 @@
 const baseURL = 'http://localhost:3001/api/v1'
+const token = '1@3456Qw-'
 
 const responseErrorHandler = (response) => {
   if (!response.ok) {
@@ -187,3 +188,82 @@ export const signOut = () => {
     type: 'SIGNOUT_SUCCESS',
   }
 }
+
+const doConfirmOrder = async (product, address, quantity) => {
+  let response = await fetch(`${baseURL}/orders`, {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ product, address, quantity }),
+  })
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+export const confirmOrder = (product, address, quantity) => (dispatch) => {
+  doConfirmOrder(product, address, quantity)
+    .then((order) => {
+      console.log(order)
+      dispatch({ type: 'CONFIRM_ORDER_SUCCESS', order })
+    })
+    .catch(() => {
+      dispatch({ type: 'CONFIRM_ORDER_FAILURE' })
+    })
+}
+
+export const addToCart = (products, quantity) => {
+  return {
+    type: 'ADD_TO_CART',
+    order: products,
+    quantity: quantity,
+  }
+}
+
+const doAddAddress = async (
+  name,
+  contactNumber,
+  street,
+  city,
+  state,
+  landmark,
+  zipCode
+) => {
+  let response = await fetch(`${baseURL}/addresses`, {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name,
+      contactNumber,
+      street,
+      city,
+      state,
+      landmark,
+      zipCode,
+    }),
+  })
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+export const addAddress =
+  (name, contactNumber, street, city, state, landmark, zipCode) => (dispatch) =>
+    doAddAddress(name, contactNumber, street, city, state, landmark, zipCode)
+      .then((address) => {
+        console.log(address)
+        dispatch({ type: 'ADD_ADDRESS_SUCCESS', address })
+      })
+      .catch(() => {
+        dispatch({
+          type: 'ADD_ADDRESS_FAILURE',
+        })
+      })
