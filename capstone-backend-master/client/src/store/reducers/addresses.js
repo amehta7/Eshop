@@ -9,6 +9,13 @@ const addresses = (state = initialState, action) => {
         address: [action.address, ...state.address],
       }
     }
+
+    case 'GET_ADDRESS_SUCCESS': {
+      return {
+        address: action.address,
+      }
+    }
+
     default: {
       return state
     }

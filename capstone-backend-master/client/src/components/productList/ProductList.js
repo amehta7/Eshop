@@ -44,7 +44,8 @@ const ProductList = memo(({ products, user }) => {
                     >
                       BUY
                     </Button>
-                    {user && user.role === 'admin' ? (
+                    {user.role === 'admin' ||
+                    user.email === 'admin@upgrad.com' ? (
                       <div className='icon'>
                         <div className='modify-div'>
                           <Button color='inherit' href='/modifyProduct'>

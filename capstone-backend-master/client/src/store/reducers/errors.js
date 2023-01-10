@@ -43,6 +43,12 @@ const errors = (state = initialState, action) => {
       }
     }
 
+    case 'GET_ADDRESS_FAILURE': {
+      return {
+        error: true,
+      }
+    }
+
     case 'GET_PRODUCTS_SUCCESS': {
       return {
         error: false,

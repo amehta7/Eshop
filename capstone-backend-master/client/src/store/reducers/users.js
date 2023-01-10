@@ -1,5 +1,5 @@
 const initialState = {
-  user: {},
+  user: JSON.parse(window.localStorage.getItem('user')),
 }
 
 const users = (state = initialState, action) => {

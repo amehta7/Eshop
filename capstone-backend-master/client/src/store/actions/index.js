@@ -1,5 +1,5 @@
 const baseURL = 'http://localhost:3001/api/v1'
-const token = '1@3456Qw-'
+//const token = '1@3456Qw-'
 
 const responseErrorHandler = (response) => {
   if (!response.ok) {
@@ -124,8 +124,12 @@ const doSignIn = async (email, password) => {
 
 export const signIn = (email, password, navigate, location) => (dispatch) =>
   doSignIn(email, password)
-    .then((user) => {
+    .then((data) => {
+      const { token, user } = data
       console.log(user)
+      console.log(token)
+      window.localStorage.setItem('token', token)
+      window.localStorage.setItem('user', JSON.stringify(user))
       dispatch({ type: 'SIGNIN_SUCCESS', user })
       const { from } = (location && location.state) || {
         from: { pathname: '/products' },
@@ -169,6 +173,7 @@ export const signUp =
     doSignUp(firstName, lastName, email, password, contactNumber)
       .then((user) => {
         console.log(user)
+        window.localStorage.setItem('user', JSON.stringify(user))
         dispatch({ type: 'SIGNUP_SUCCESS', user })
         navigate('/products')
       })
@@ -223,6 +228,11 @@ export const addToCart = (products, quantity) => {
   }
 }
 
+const getToken = () => {
+  const token = window.localStorage.getItem('token')
+  return token
+}
+
 const doAddAddress = async (
   name,
   contactNumber,
@@ -232,6 +242,7 @@ const doAddAddress = async (
   landmark,
   zipCode
 ) => {
+  let token = await getToken()
   let response = await fetch(`${baseURL}/addresses`, {
     method: 'POST',
     cache: 'no-cache',
@@ -259,11 +270,39 @@ export const addAddress =
   (name, contactNumber, street, city, state, landmark, zipCode) => (dispatch) =>
     doAddAddress(name, contactNumber, street, city, state, landmark, zipCode)
       .then((address) => {
-        console.log(address)
-        dispatch({ type: 'ADD_ADDRESS_SUCCESS', address })
+        console.log(address._doc)
+        dispatch({ type: 'ADD_ADDRESS_SUCCESS', address: address._doc })
       })
       .catch(() => {
         dispatch({
           type: 'ADD_ADDRESS_FAILURE',
         })
       })
+
+const doGetAddress = async () => {
+  let token = await getToken()
+  let response = await fetch(`${baseURL}/addresses`, {
+    method: 'GET',
+    cache: 'no-cache',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+  })
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+export const getAddress = () => (dispatch) =>
+  doGetAddress()
+    .then((address) => {
+      console.log(address)
+      dispatch({ type: 'GET_ADDRESS_SUCCESS', address: address })
+    })
+    .catch(() => {
+      dispatch({
+        type: 'GET_ADDRESS_FAILURE',
+      })
+    })

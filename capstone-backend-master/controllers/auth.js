@@ -27,11 +27,19 @@ async function signIn(req, res) {
     },
     '1@3456Qw-'
   )
-  res.header(AUTH_TOKEN, token).send({
-    name: `${user.firstName} ${user.lastName}`,
-    email: user.email,
-    isAuthenticated: true,
+  res.send({
+    token,
+    user: {
+      name: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      isAuthenticated: true,
+    },
   })
+  // res.header(AUTH_TOKEN, token).send({
+  //   name: `${user.firstName} ${user.lastName}`,
+  //   email: user.email,
+  //   isAuthenticated: true,
+  // })
 }
 
 async function signUp(req, res) {

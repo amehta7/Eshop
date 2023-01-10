@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import Select from 'react-select'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -7,9 +7,9 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import './Address.css'
 import { connect } from 'react-redux'
-import { addAddress } from '../../store/actions/index'
+import { addAddress, getAddress } from '../../store/actions/index'
 
-const Address = memo(({ onAddAddress, address, error }) => {
+const Address = memo(({ onAddAddress, address, error, onGetAddress }) => {
   const [name, setName] = useState('')
   const [contactNumber, setContactNumber] = useState('')
   const [street, setStreet] = useState('')
@@ -17,6 +17,19 @@ const Address = memo(({ onAddAddress, address, error }) => {
   const [state, setState] = useState('')
   const [landmark, setLandmark] = useState('')
   const [zipCode, setZipCode] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [selectedOption, setSelectedOption] = useState('')
+
+  useEffect(() => {
+    onGetAddress()
+  }, [onGetAddress])
+
+  const options = address.map((item, index) => {
+    return {
+      label: item.name + ' ...>' + item.street + ' , ' + item.city,
+      value: item._id,
+    }
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -29,12 +42,22 @@ const Address = memo(({ onAddAddress, address, error }) => {
     setZipCode('')
   }
 
+  const handleSelectChange = (selectedOption) => {
+    setSelectedOption(selectedOption.value)
+    console.log(selectedOption)
+  }
+
   return (
     <div className='address-div'>
       <div>
         <div className='sel-div'>
           Select Address:
-          <Select defaultValue='Select...' />
+          <Select
+            value={selectedOption}
+            options={options}
+            onChange={handleSelectChange}
+            searchable={false}
+          />
         </div>
         <div className='or-div'>-OR-</div>
         <div className='add-div'>
@@ -50,12 +73,7 @@ const Address = memo(({ onAddAddress, address, error }) => {
               <Typography component='h1' variant='h5'>
                 Add Address
               </Typography>
-              <Box
-                component='form'
-                onSubmit={handleSubmit}
-                noValidate
-                sx={{ mt: 1 }}
-              >
+              <Box component='form' noValidate sx={{ mt: 1 }}>
                 <TextField
                   margin='normal'
                   required
@@ -68,7 +86,9 @@ const Address = memo(({ onAddAddress, address, error }) => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
-
+                {submitted && !name && (
+                  <div style={{ color: 'red' }}>Name is required</div>
+                )}
                 <TextField
                   margin='normal'
                   required
@@ -81,6 +101,14 @@ const Address = memo(({ onAddAddress, address, error }) => {
                   value={contactNumber}
                   onChange={(e) => setContactNumber(e.target.value)}
                 />
+                {submitted && !contactNumber && (
+                  <div style={{ color: 'red' }}>Contact Number is required</div>
+                )}
+                {submitted && contactNumber.length < 10 && (
+                  <div style={{ color: 'red' }}>
+                    Contact Number length must be at least 10 characters long
+                  </div>
+                )}
                 <TextField
                   margin='normal'
                   required
@@ -93,6 +121,9 @@ const Address = memo(({ onAddAddress, address, error }) => {
                   value={street}
                   onChange={(e) => setStreet(e.target.value)}
                 />
+                {submitted && !street && (
+                  <div style={{ color: 'red' }}>Street is required</div>
+                )}
                 <TextField
                   margin='normal'
                   required
@@ -105,6 +136,9 @@ const Address = memo(({ onAddAddress, address, error }) => {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                 />
+                {submitted && !city && (
+                  <div style={{ color: 'red' }}>City is required</div>
+                )}
                 <TextField
                   margin='normal'
                   required
@@ -117,6 +151,9 @@ const Address = memo(({ onAddAddress, address, error }) => {
                   value={state}
                   onChange={(e) => setState(e.target.value)}
                 />
+                {submitted && !state && (
+                  <div style={{ color: 'red' }}>State is required</div>
+                )}
                 <TextField
                   margin='normal'
                   fullWidth
@@ -140,6 +177,14 @@ const Address = memo(({ onAddAddress, address, error }) => {
                   value={zipCode}
                   onChange={(e) => setZipCode(e.target.value)}
                 />
+                {submitted && !zipCode && (
+                  <div style={{ color: 'red' }}>Zip Code is required</div>
+                )}
+                {submitted && zipCode.length < 6 && (
+                  <div style={{ color: 'red' }}>
+                    Zip Code must be at least 6 characters long
+                  </div>
+                )}
                 <Button
                   className='btn'
                   type='button'
@@ -147,17 +192,29 @@ const Address = memo(({ onAddAddress, address, error }) => {
                   variant='contained'
                   sx={{ mt: 3, mb: 2 }}
                   style={{ backgroundColor: '#3f51b5' }}
-                  onClick={() =>
-                    onAddAddress(
-                      name,
-                      contactNumber,
-                      street,
-                      city,
-                      state,
-                      landmark,
-                      zipCode
+                  onClick={() => {
+                    return (
+                      <React.Fragment>
+                        {!error &&
+                          name &&
+                          contactNumber &&
+                          street &&
+                          city &&
+                          state &&
+                          zipCode &&
+                          onAddAddress(
+                            name,
+                            contactNumber,
+                            street,
+                            city,
+                            state,
+                            landmark,
+                            zipCode
+                          )}
+                        {!error ? setSubmitted(true) : null}
+                      </React.Fragment>
                     )
-                  }
+                  }}
                 >
                   Save Address
                 </Button>
@@ -191,7 +248,31 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(
         addAddress(name, contactNumber, street, city, state, landmark, zipCode)
       ),
+    onGetAddress: () => dispatch(getAddress()),
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Address)
+
+//Select Address:
+// <Select
+//   defaultValue='Select...'
+//   value={selectedOption}
+//     options={options}
+//     onChange={handleSelectChange}
+
+// />
+
+// <select
+//             value={value}
+//             onChange={(e) => {
+//               setValue(e.target.value)
+//               console.log(value)
+//             }}
+//           >
+//             {address.map(({ _id, a }) => {
+//               return <option key={_id}>{a}</option>
+//             })}
+//           </select>
+
+//defaultValue = 'Select...'

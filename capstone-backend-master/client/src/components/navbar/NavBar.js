@@ -106,7 +106,7 @@ const NavBar = memo(
                 >
                   Home
                 </Button>
-                {user.role === 'admin' ? (
+                {user.role === 'admin' || user.email === 'admin@upgrad.com' ? (
                   <Link to='/addProduct'>
                     <Button
                       color='inherit'
@@ -120,6 +120,7 @@ const NavBar = memo(
                     </Button>
                   </Link>
                 ) : null}
+                <p>{user.name}</p>
                 <Link to='/' style={{ textDecoration: 'none' }}>
                   <Button
                     style={{
