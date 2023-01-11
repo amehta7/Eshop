@@ -11,6 +11,8 @@ import CartItem from '../cartItem/CartItem'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './CreateOrder.css'
+import { connect } from 'react-redux'
+import { confirmOrder } from '../../store/actions/index'
 
 const steps = ['Items', 'Select Address', 'Confirm Order']
 
@@ -27,7 +29,7 @@ const RenderStep = (step) => {
   }
 }
 
-const CreateOrder = () => {
+const CreateOrder = ({ orders, quantity, selectedAddress, onConfirmOrder }) => {
   const [activeStep, setActiveStep] = useState(0)
 
   const handleNext = () => {
@@ -87,10 +89,18 @@ const CreateOrder = () => {
                           width: '150px',
                         }}
                         onClick={() => {
-                          toast.success('Order placed successfully!', {
-                            position: toast.POSITION.TOP_RIGHT,
-                          })
+                          return (
+                            onConfirmOrder(
+                              orders._id,
+                              selectedAddress.value,
+                              quantity
+                            ),
+                            toast.success('Order placed successfully!', {
+                              position: toast.POSITION.TOP_RIGHT,
+                            })
+                          )
                         }}
+                        href='/products'
                       >
                         PLACE ORDER
                       </Button>
@@ -117,4 +127,19 @@ const CreateOrder = () => {
   )
 }
 
-export default CreateOrder
+const mapStateToProps = (state) => {
+  return {
+    orders: state.orders.order,
+    quantity: state.orders.quantity,
+    selectedAddress: state.addresses.selectedAddress,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onConfirmOrder: (product, address, quantity) =>
+      dispatch(confirmOrder(product, address, quantity)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateOrder)

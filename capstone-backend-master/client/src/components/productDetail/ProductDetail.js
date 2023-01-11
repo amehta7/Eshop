@@ -93,15 +93,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)
-
-// onClick={() => {
-//               return (
-//                 <React.Fragment>
-//                   {qty && onAddToCart(products)}
-//                   {qty !== ''
-//                     ? setOrderbtnClick(true)
-//                     : setOrderbtnClick(false)}
-//                 </React.Fragment>
-//               )
-//             }}
-// href={orderbtnClick ? '/createorder' : '#'}

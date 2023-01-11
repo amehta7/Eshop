@@ -41,9 +41,30 @@ const App = ({ onSignOut, user }) => {
               </Protected>
             }
           />
-          <Route path='/createorder' element={<CreateOrder />} />
-          <Route path='/addProduct' element={<AddProduct />} />
-          <Route path='/modifyProduct' element={<ModifyProduct />} />
+          <Route
+            path='/createorder'
+            element={
+              <Protected user={user}>
+                <CreateOrder />
+              </Protected>
+            }
+          />
+          <Route
+            path='/addProduct'
+            element={
+              <Protected user={user}>
+                <AddProduct />
+              </Protected>
+            }
+          />
+          <Route
+            path='/modifyProduct'
+            element={
+              <Protected user={user}>
+                <ModifyProduct />
+              </Protected>
+            }
+          />
           <Route path='*' element={<Nomatch />} />
         </Routes>
       </div>

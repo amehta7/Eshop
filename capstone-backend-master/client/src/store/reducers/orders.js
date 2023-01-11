@@ -11,6 +11,13 @@ const orders = (state = initialState, action) => {
         quantity: action.quantity,
       }
     }
+
+    case 'CONFIRM_ORDER_SUCCESS': {
+      return {
+        order: action.order,
+        quantity: action.quantity,
+      }
+    }
     default: {
       return state
     }

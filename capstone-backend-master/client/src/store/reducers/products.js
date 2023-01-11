@@ -35,6 +35,23 @@ const products = (state = initialState, action) => {
       }
     }
 
+    case 'ADD_PRODUCT_SUCCESS': {
+      // let newProduct = {
+      //   _id: uuid(),
+      //   name: action.products.name,
+      //   category: action.products.category,
+      //   manufacturer: action.products.manufacturer,
+      //   price: action.products.price,
+      //   availableItems: action.products.availableItems,
+      //   imageURL: action.products.imageURL,
+      //   description: action.products.description,
+      // }
+      return {
+        ...state,
+        products: [action.products, ...state.products],
+      }
+    }
+
     case 'DELETE_PRODUCTS_SUCCESS': {
       return {
         ...state,

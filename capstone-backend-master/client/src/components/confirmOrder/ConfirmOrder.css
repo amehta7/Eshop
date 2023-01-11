@@ -30,7 +30,7 @@
 
 .first-div > p {
   margin-top: 2px;
-  font-size: 0.8rem;
+  font-size: 14px;
 }
 
 .first-div > .price {
@@ -47,5 +47,5 @@
 
 .sec-div > p {
   margin-top: 2px;
-  font-size: 0.8rem;
+  font-size: 14px;
 }

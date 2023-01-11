@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -8,6 +8,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import CreatableSelect from 'react-select/creatable'
 import './AddProduct.css'
+import { connect } from 'react-redux'
+import { addProduct } from '../../store/actions/index'
 
 const createOption = (label) => ({
   label,
@@ -20,17 +22,16 @@ const defaultOptions = [
   createOption('Personal Care'),
 ]
 
-const AddProduct = () => {
+const AddProduct = memo(({ onAddProduct, error, products }) => {
   const [name, setName] = useState('')
-  const [cat, setCat] = useState('')
-  const [manu, setManu] = useState('')
-  const [item, setItem] = useState('')
+  const [category, setCategory] = useState('')
+  const [manufacturer, setManufacturer] = useState('')
+  const [availableItems, setAvailableItems] = useState('')
   const [price, setPrice] = useState('')
-  const [url, setUrl] = useState('')
-  const [desc, setDesc] = useState('')
+  const [imageURL, setImageURL] = useState('')
+  const [description, setDescription] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [options, setOptions] = useState(defaultOptions)
-  const [value, setValue] = useState('')
 
   const handleCreate = (inputValue) => {
     setIsLoading(true)
@@ -38,19 +39,25 @@ const AddProduct = () => {
       const newOption = createOption(inputValue)
       setIsLoading(false)
       setOptions((prev) => [...prev, newOption])
-      setValue(newOption)
+      setCategory(newOption)
     }, 1000)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Hi')
-  }
-
   const handleAddProduct = () => {
-    toast.success(`Product {name} added successfully`, {
-      position: toast.POSITION.TOP_RIGHT,
-    })
+    return (
+      onAddProduct(
+        name,
+        category,
+        manufacturer,
+        price,
+        availableItems,
+        imageURL,
+        description
+      ),
+      toast.success(`Product ${name} added successfully`, {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+    )
   }
 
   return (
@@ -67,12 +74,7 @@ const AddProduct = () => {
           <Typography component='h1' variant='h5'>
             Add Product
           </Typography>
-          <Box
-            component='form'
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component='form' noValidate sx={{ mt: 1 }}>
             <TextField
               margin='normal'
               required
@@ -89,10 +91,10 @@ const AddProduct = () => {
               isClearable
               isDisabled={isLoading}
               isLoading={isLoading}
-              onChange={(newValue) => setValue(newValue)}
+              onChange={(newValue) => setCategory(newValue)}
               onCreateOption={handleCreate}
               options={options}
-              value={value}
+              value={category}
               menuPortalTarget={document.body}
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
             />
@@ -105,8 +107,8 @@ const AddProduct = () => {
               name='manufacturer'
               autoComplete='manufacturer'
               autoFocus
-              value={manu}
-              onChange={(e) => setManu(e.target.value)}
+              value={manufacturer}
+              onChange={(e) => setManufacturer(e.target.value)}
             />
             <TextField
               margin='normal'
@@ -117,8 +119,8 @@ const AddProduct = () => {
               name='item'
               autoComplete='Available Items'
               autoFocus
-              value={item}
-              onChange={(e) => setItem(e.target.value)}
+              value={availableItems}
+              onChange={(e) => setAvailableItems(e.target.value)}
             />
             <TextField
               margin='normal'
@@ -141,8 +143,8 @@ const AddProduct = () => {
               name='url'
               autoComplete='image url'
               autoFocus
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              value={imageURL}
+              onChange={(e) => setImageURL(e.target.value)}
             />
             <TextField
               margin='normal'
@@ -152,18 +154,19 @@ const AddProduct = () => {
               name='desc'
               autoComplete='product description'
               autoFocus
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
 
             <Button
               className='btn'
-              type='submit'
+              type='button'
               fullWidth
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
               style={{ backgroundColor: '#3f51b5' }}
               onClick={handleAddProduct}
+              href='/products'
             >
               Save Product
             </Button>
@@ -173,6 +176,38 @@ const AddProduct = () => {
       </Container>
     </div>
   )
+})
+
+const mapStateToProps = (state) => {
+  return {
+    products: state.products.products,
+    error: state.errors.error,
+  }
 }
 
-export default AddProduct
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddProduct: (
+      name,
+      category,
+      manufacturer,
+      price,
+      availableItems,
+      imageURL,
+      description
+    ) =>
+      dispatch(
+        addProduct(
+          name,
+          category,
+          manufacturer,
+          price,
+          availableItems,
+          imageURL,
+          description
+        )
+      ),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddProduct)

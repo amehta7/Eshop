@@ -8,6 +8,11 @@ const responseErrorHandler = (response) => {
   return response
 }
 
+const getToken = () => {
+  const token = window.localStorage.getItem('token')
+  return token
+}
+
 export const fetchProducts = () => (dispatch) =>
   fetch(`${baseURL}/products`)
     .then(responseErrorHandler)
@@ -104,6 +109,70 @@ export const deleteProductById = (id) => (dispatch) =>
       })
     )
 
+const doAddProduct = async (
+  name,
+  category,
+  manufacturer,
+  price,
+  availableItems,
+  imageURL,
+  description
+) => {
+  let token = await getToken()
+  let response = await fetch(`${baseURL}/products`, {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name,
+      category,
+      manufacturer,
+      price,
+      availableItems,
+      imageURL,
+      description,
+    }),
+  })
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+export const addProduct =
+  (
+    name,
+    category,
+    manufacturer,
+    price,
+    availableItems,
+    imageURL,
+    description
+  ) =>
+  (dispatch) => {
+    doAddProduct(
+      name,
+      category,
+      manufacturer,
+      price,
+      availableItems,
+      imageURL,
+      description
+    )
+      .then((products) => {
+        console.log(products)
+        dispatch({ type: 'ADD_PRODUCT_SUCCESS', products })
+      })
+      .catch(() =>
+        dispatch({
+          type: 'ADD_PRODUCT_FAILURE',
+        })
+      )
+  }
+
 const doSignIn = async (email, password) => {
   let response = await fetch(`${baseURL}/auth`, {
     method: 'POST',
@@ -194,32 +263,6 @@ export const signOut = () => {
   }
 }
 
-const doConfirmOrder = async (product, address, quantity) => {
-  let response = await fetch(`${baseURL}/orders`, {
-    method: 'POST',
-    cache: 'no-cache',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ product, address, quantity }),
-  })
-  let data = await response.json()
-  console.log(data)
-  return data
-}
-
-export const confirmOrder = (product, address, quantity) => (dispatch) => {
-  doConfirmOrder(product, address, quantity)
-    .then((order) => {
-      console.log(order)
-      dispatch({ type: 'CONFIRM_ORDER_SUCCESS', order })
-    })
-    .catch(() => {
-      dispatch({ type: 'CONFIRM_ORDER_FAILURE' })
-    })
-}
-
 export const addToCart = (products, quantity) => {
   return {
     type: 'ADD_TO_CART',
@@ -228,9 +271,11 @@ export const addToCart = (products, quantity) => {
   }
 }
 
-const getToken = () => {
-  const token = window.localStorage.getItem('token')
-  return token
+export const addToAddress = (address) => {
+  return {
+    type: 'ADD_TO_ADDRESS',
+    selectedAddress: address,
+  }
 }
 
 const doAddAddress = async (
@@ -306,3 +351,31 @@ export const getAddress = () => (dispatch) =>
         type: 'GET_ADDRESS_FAILURE',
       })
     })
+
+const doConfirmOrder = async (product, address, quantity) => {
+  let token = await getToken()
+  let response = await fetch(`${baseURL}/orders`, {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ product, address, quantity }),
+  })
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+export const confirmOrder = (product, address, quantity) => (dispatch) => {
+  doConfirmOrder(product, address, quantity)
+    .then((order) => {
+      console.log(order)
+      dispatch({ type: 'CONFIRM_ORDER_SUCCESS', order })
+    })
+    .catch(() => {
+      dispatch({ type: 'CONFIRM_ORDER_FAILURE' })
+    })
+}
