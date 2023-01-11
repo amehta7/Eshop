@@ -32,6 +32,7 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
   const [description, setDescription] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [options, setOptions] = useState(defaultOptions)
+  const [submitted, setSubmitted] = useState(false)
 
   const handleCreate = (inputValue) => {
     setIsLoading(true)
@@ -45,18 +46,30 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
 
   const handleAddProduct = () => {
     return (
-      onAddProduct(
-        name,
-        category,
-        manufacturer,
-        price,
-        availableItems,
-        imageURL,
+      <React.Fragment>
+        {!error &&
+        name &&
+        category &&
+        manufacturer &&
+        price &&
+        availableItems &&
+        imageURL &&
         description
-      ),
-      toast.success(`Product ${name} added successfully`, {
-        position: toast.POSITION.TOP_RIGHT,
-      })
+          ? (onAddProduct(
+              name,
+              category.label,
+              manufacturer,
+              price,
+              availableItems,
+              imageURL,
+              description
+            ),
+            toast.success(`Product ${name} added successfully`, {
+              position: toast.POSITION.TOP_RIGHT,
+            }),
+            setSubmitted(true))
+          : null}
+      </React.Fragment>
     )
   }
 
@@ -87,6 +100,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            {submitted && !name && (
+              <div style={{ color: 'red' }}>Name is required</div>
+            )}
             <CreatableSelect
               isClearable
               isDisabled={isLoading}
@@ -98,6 +114,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               menuPortalTarget={document.body}
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
             />
+            {submitted && !category && (
+              <div style={{ color: 'red' }}>Category is required</div>
+            )}
             <TextField
               margin='normal'
               required
@@ -110,6 +129,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               value={manufacturer}
               onChange={(e) => setManufacturer(e.target.value)}
             />
+            {submitted && !manufacturer && (
+              <div style={{ color: 'red' }}>Manufacturer is required</div>
+            )}
             <TextField
               margin='normal'
               required
@@ -122,6 +144,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               value={availableItems}
               onChange={(e) => setAvailableItems(e.target.value)}
             />
+            {submitted && !availableItems && (
+              <div style={{ color: 'red' }}>Available Items is required</div>
+            )}
             <TextField
               margin='normal'
               required
@@ -134,6 +159,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
+            {submitted && !price && (
+              <div style={{ color: 'red' }}>Price is required</div>
+            )}
             <TextField
               margin='normal'
               required
@@ -146,6 +174,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               value={imageURL}
               onChange={(e) => setImageURL(e.target.value)}
             />
+            {submitted && !imageURL && (
+              <div style={{ color: 'red' }}>Image URL is required</div>
+            )}
             <TextField
               margin='normal'
               fullWidth
@@ -157,7 +188,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-
+            {submitted && !description && (
+              <div style={{ color: 'red' }}>Description is required</div>
+            )}
             <Button
               className='btn'
               type='button'
@@ -166,7 +199,19 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               sx={{ mt: 3, mb: 2 }}
               style={{ backgroundColor: '#3f51b5' }}
               onClick={handleAddProduct}
-              href='/products'
+              href={
+                !error &&
+                name &&
+                category &&
+                manufacturer &&
+                price &&
+                availableItems &&
+                imageURL &&
+                description &&
+                submitted
+                  ? '/products'
+                  : '#'
+              }
             >
               Save Product
             </Button>
