@@ -1,5 +1,7 @@
+import 'react-toastify/dist/ReactToastify.css'
+import { toast } from 'react-toastify'
+
 const baseURL = 'http://localhost:3001/api/v1'
-//const token = '1@3456Qw-'
 
 const responseErrorHandler = (response) => {
   if (!response.ok) {
@@ -96,12 +98,34 @@ export const fetchProductById = (id) => (dispatch) =>
       })
     )
 
-export const deleteProductById = (id) => (dispatch) =>
-  fetch(`${baseURL}/products/${id}`)
-    .then(responseErrorHandler)
-    .then((res) => res.json())
+const doDeleteProduct = async (id) => {
+  let token = await getToken()
+  let response = await fetch(`${baseURL}/products/${id}`, {
+    method: 'DELETE',
+    cache: 'no-cache',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      id,
+    }),
+  })
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+export const deleteProduct = (id) => (dispatch) =>
+  doDeleteProduct(id)
     .then((products) => {
+      console.log(products)
       dispatch({ type: 'DELETE_PRODUCTS_SUCCESS', products })
+      toast.success(`Product ${products.name} deleted successfully`, {
+        position: toast.POSITION.TOP_RIGHT,
+      })
+      console.log('deleted')
     })
     .catch(() =>
       dispatch({
@@ -150,7 +174,8 @@ export const addProduct =
     price,
     availableItems,
     imageURL,
-    description
+    description,
+    navigate
   ) =>
   (dispatch) => {
     doAddProduct(
@@ -165,10 +190,89 @@ export const addProduct =
       .then((products) => {
         console.log(products)
         dispatch({ type: 'ADD_PRODUCT_SUCCESS', products })
+        toast.success(`Product ${products.name} added successfully`, {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+        console.log('added')
+        navigate('/products')
       })
       .catch(() =>
         dispatch({
           type: 'ADD_PRODUCT_FAILURE',
+        })
+      )
+  }
+
+const doUpdateProduct = async (
+  id,
+  name,
+  category,
+  manufacturer,
+  price,
+  availableItems,
+  imageURL,
+  description
+) => {
+  let token = await getToken()
+  let response = await fetch(`${baseURL}/products/${id}`, {
+    method: 'PUT',
+    cache: 'no-cache',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      id,
+      name,
+      category,
+      manufacturer,
+      price,
+      availableItems,
+      imageURL,
+      description,
+    }),
+  })
+  let data = await response.json()
+  console.log(data)
+  return data
+}
+
+export const updateProduct =
+  (
+    id,
+    name,
+    category,
+    manufacturer,
+    price,
+    availableItems,
+    imageURL,
+    description,
+    navigate
+  ) =>
+  (dispatch) => {
+    doUpdateProduct(
+      id,
+      name,
+      category,
+      manufacturer,
+      price,
+      availableItems,
+      imageURL,
+      description
+    )
+      .then((products) => {
+        console.log(products)
+        dispatch({ type: 'UPDATE_PRODUCT_SUCCESS', products })
+        toast.success(`Product ${products.name} modified successfully`, {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+        console.log('updated')
+        navigate('/products')
+      })
+      .catch(() =>
+        dispatch({
+          type: 'UPDATE_PRODUCT_FAILURE',
         })
       )
   }
@@ -369,13 +473,14 @@ const doConfirmOrder = async (product, address, quantity) => {
   return data
 }
 
-export const confirmOrder = (product, address, quantity) => (dispatch) => {
-  doConfirmOrder(product, address, quantity)
-    .then((order) => {
-      console.log(order)
-      dispatch({ type: 'CONFIRM_ORDER_SUCCESS', order })
-    })
-    .catch(() => {
-      dispatch({ type: 'CONFIRM_ORDER_FAILURE' })
-    })
-}
+export const confirmOrder =
+  (product, address, quantity, navigate) => (dispatch) => {
+    doConfirmOrder(product, address, quantity)
+      .then((order) => {
+        console.log(order)
+        dispatch({ type: 'CONFIRM_ORDER_SUCCESS', order })
+      })
+      .catch(() => {
+        dispatch({ type: 'CONFIRM_ORDER_FAILURE' })
+      })
+  }

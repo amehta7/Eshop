@@ -10,14 +10,17 @@ import ProductDetail from './components/productDetail/ProductDetail'
 import CreateOrder from './components/createOrder/CreateOrder'
 import ModifyProduct from './components/modifyProduct/ModifyProduct'
 import AddProduct from './components/addProduct/AddProduct'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Protected from './components/protected/Protected'
 import { connect } from 'react-redux'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 import { signOut } from './store/actions/index'
 
 const App = ({ onSignOut, user }) => {
   return (
     <BrowserRouter>
+      <ToastContainer />
       <div className='app'>
         <NavBar />
 
@@ -58,7 +61,7 @@ const App = ({ onSignOut, user }) => {
             }
           />
           <Route
-            path='/modifyProduct'
+            path='/modifyProduct/:id'
             element={
               <Protected user={user}>
                 <ModifyProduct />

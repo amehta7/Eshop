@@ -1,9 +1,8 @@
 .toggle-div {
   padding-top: 100px;
+  display: flex;
+  justify-content: center;
   position: relative;
-  margin: auto;
-  left: 40%;
-  width: 'fit-content';
 }
 
 .list {

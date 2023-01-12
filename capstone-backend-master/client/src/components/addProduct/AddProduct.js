@@ -4,12 +4,11 @@ import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import CreatableSelect from 'react-select/creatable'
 import './AddProduct.css'
 import { connect } from 'react-redux'
 import { addProduct } from '../../store/actions/index'
+import { useNavigate } from 'react-router-dom'
 
 const createOption = (label) => ({
   label,
@@ -23,6 +22,7 @@ const defaultOptions = [
 ]
 
 const AddProduct = memo(({ onAddProduct, error, products }) => {
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [category, setCategory] = useState('')
   const [manufacturer, setManufacturer] = useState('')
@@ -47,6 +47,7 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
   const handleAddProduct = () => {
     return (
       <React.Fragment>
+        {setSubmitted(true)}
         {!error &&
         name &&
         category &&
@@ -62,11 +63,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               price,
               availableItems,
               imageURL,
-              description
+              description,
+              navigate
             ),
-            toast.success(`Product ${name} added successfully`, {
-              position: toast.POSITION.TOP_RIGHT,
-            }),
             setSubmitted(true))
           : null}
       </React.Fragment>
@@ -87,6 +86,7 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
           <Typography component='h1' variant='h5'>
             Add Product
           </Typography>
+
           <Box component='form' noValidate sx={{ mt: 1 }}>
             <TextField
               margin='normal'
@@ -191,6 +191,7 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
             {submitted && !description && (
               <div style={{ color: 'red' }}>Description is required</div>
             )}
+
             <Button
               className='btn'
               type='button'
@@ -199,23 +200,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               sx={{ mt: 3, mb: 2 }}
               style={{ backgroundColor: '#3f51b5' }}
               onClick={handleAddProduct}
-              href={
-                !error &&
-                name &&
-                category &&
-                manufacturer &&
-                price &&
-                availableItems &&
-                imageURL &&
-                description &&
-                submitted
-                  ? '/products'
-                  : '#'
-              }
             >
               Save Product
             </Button>
-            <ToastContainer />
           </Box>
         </Box>
       </Container>
@@ -239,7 +226,8 @@ const mapDispatchToProps = (dispatch) => {
       price,
       availableItems,
       imageURL,
-      description
+      description,
+      navigate
     ) =>
       dispatch(
         addProduct(
@@ -249,7 +237,8 @@ const mapDispatchToProps = (dispatch) => {
           price,
           availableItems,
           imageURL,
-          description
+          description,
+          navigate
         )
       ),
   }

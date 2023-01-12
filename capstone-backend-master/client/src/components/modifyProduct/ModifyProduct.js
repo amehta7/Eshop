@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import './ModifyProduct.css'
+import { connect } from 'react-redux'
+import { updateProduct } from '../../store/actions/index'
+import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const ModifyProduct = () => {
+const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [cat, setCat] = useState('')
   const [manu, setManu] = useState('')
@@ -17,15 +20,25 @@ const ModifyProduct = () => {
   const [url, setUrl] = useState('')
   const [desc, setDesc] = useState('')
 
+  let { id } = useParams()
+
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log('Hi')
   }
 
   const handleModProduct = () => {
-    toast.success(`Product {name} modified successfully`, {
-      position: toast.POSITION.TOP_RIGHT,
-    })
+    return onUpdateProduct(
+      id,
+      name,
+      cat,
+      manu,
+      price,
+      item,
+      url,
+      desc,
+      navigate
+    )
   }
 
   return (
@@ -134,7 +147,7 @@ const ModifyProduct = () => {
 
             <Button
               className='btn'
-              type='submit'
+              type='button'
               fullWidth
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
@@ -143,12 +156,47 @@ const ModifyProduct = () => {
             >
               Modify Product
             </Button>
-            <ToastContainer />
           </Box>
         </Box>
       </Container>
     </div>
   )
+})
+
+const mapStateToProps = (state) => {
+  return {
+    products: state.products.products,
+    error: state.errors.error,
+  }
 }
 
-export default ModifyProduct
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onUpdateProduct: (
+      id,
+      name,
+      category,
+      manufacturer,
+      price,
+      availableItems,
+      imageURL,
+      description,
+      navigate
+    ) =>
+      dispatch(
+        updateProduct(
+          id,
+          name,
+          category,
+          manufacturer,
+          price,
+          availableItems,
+          imageURL,
+          description,
+          navigate
+        )
+      ),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModifyProduct)

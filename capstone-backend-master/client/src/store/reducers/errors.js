@@ -37,6 +37,12 @@ const errors = (state = initialState, action) => {
       }
     }
 
+    case 'UPDATE_PRODUCT_FAILURE': {
+      return {
+        error: true,
+      }
+    }
+
     case 'ADD_TO_CART_FAILURE': {
       return {
         error: true,

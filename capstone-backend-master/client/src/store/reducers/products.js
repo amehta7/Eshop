@@ -1,5 +1,3 @@
-import { v4 as uuid } from 'uuid'
-
 const initialState = {
   products: [],
   categories: [],
@@ -36,16 +34,13 @@ const products = (state = initialState, action) => {
     }
 
     case 'ADD_PRODUCT_SUCCESS': {
-      // let newProduct = {
-      //   _id: uuid(),
-      //   name: action.products.name,
-      //   category: action.products.category,
-      //   manufacturer: action.products.manufacturer,
-      //   price: action.products.price,
-      //   availableItems: action.products.availableItems,
-      //   imageURL: action.products.imageURL,
-      //   description: action.products.description,
-      // }
+      return {
+        ...state,
+        products: [action.products, ...state.products],
+      }
+    }
+
+    case 'UPDATE_PRODUCT_SUCCESS': {
       return {
         ...state,
         products: [action.products, ...state.products],
@@ -55,10 +50,11 @@ const products = (state = initialState, action) => {
     case 'DELETE_PRODUCTS_SUCCESS': {
       return {
         ...state,
-        // products: [
-        //   ...state.products.filter((product) => product._id !== action._id),
-        // ],
-        products: action.products,
+        products: [
+          ...state.products.filter(
+            (product) => product._id !== action.products._id
+          ),
+        ],
       }
     }
 

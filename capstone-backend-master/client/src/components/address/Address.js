@@ -210,6 +210,7 @@ const Address = memo(
                     onClick={() => {
                       return (
                         <React.Fragment>
+                          {setSubmitted(true)}
                           {!error &&
                             name &&
                             contactNumber &&

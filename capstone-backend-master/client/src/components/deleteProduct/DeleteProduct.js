@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -6,10 +6,12 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 import 'react-toastify/dist/ReactToastify.css'
+import { connect } from 'react-redux'
+import { deleteProduct } from '../../store/actions/index'
 
-const DeleteProduct = ({ name }) => {
+const DeleteProduct = memo(({ name, id, products, onDeleteProduct }) => {
   const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
@@ -21,9 +23,8 @@ const DeleteProduct = ({ name }) => {
   }
 
   const delMsg = () => {
-    toast.success(`Product ${name} deleted successfully`, {
-      position: toast.POSITION.TOP_RIGHT,
-    })
+    onDeleteProduct(id)
+    setOpen(false)
   }
 
   return (
@@ -45,6 +46,7 @@ const DeleteProduct = ({ name }) => {
             Are you sure you want to delete the product?
           </DialogContentText>
         </DialogContent>
+
         <DialogActions>
           <Button
             size='small'
@@ -54,7 +56,7 @@ const DeleteProduct = ({ name }) => {
           >
             OK
           </Button>
-          <ToastContainer />
+
           <Button
             onClick={handleClose}
             variant='outlined'
@@ -66,6 +68,18 @@ const DeleteProduct = ({ name }) => {
       </Dialog>
     </div>
   )
+})
+
+const mapStateToProps = (state) => {
+  return {
+    products: state.products.products,
+  }
 }
 
-export default DeleteProduct
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onDeleteProduct: (id) => dispatch(deleteProduct(id)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteProduct)

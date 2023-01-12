@@ -191,6 +191,7 @@ const Signup = ({ onSignUpUser, user, error }) => {
               onClick={() => {
                 return (
                   <React.Fragment>
+                    {setSubmitted(true)}
                     {!error &&
                       firstName &&
                       lastName &&
@@ -207,7 +208,6 @@ const Signup = ({ onSignUpUser, user, error }) => {
                         contactNumber,
                         navigate
                       )}
-                    {error ? setSubmitted(false) : setSubmitted(true)}
                   </React.Fragment>
                 )
               }}

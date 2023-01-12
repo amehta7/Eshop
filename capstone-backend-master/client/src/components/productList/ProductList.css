@@ -38,14 +38,25 @@
 /* top | right | bottom | left */
 
 .card {
+  width: 90vw;
+  max-width: var(--max-width);
+  display: grid;
+  gap: 2rem;
+  margin: 0 auto;
+  padding-bottom: 5rem;
+  padding-top: 3rem;
+  grid-template-columns: auto auto auto;
+}
+
+.main-div {
+  padding-bottom: 40px;
+}
+
+/* .card {
   padding: 50px;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
   justify-content: space-between;
   position: relative;
-}
-
-.main-div {
-  padding-bottom: 40px;
-}
+} */

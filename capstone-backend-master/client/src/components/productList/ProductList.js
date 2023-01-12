@@ -22,7 +22,7 @@ const ProductList = memo(({ products, user }) => {
                     className='imageCard'
                     component='img'
                     alt={name}
-                    height='140'
+                    height='150'
                     image={imageURL}
                     style={{ objectFit: 'fill' }}
                   />
@@ -48,12 +48,15 @@ const ProductList = memo(({ products, user }) => {
                     user.email === 'admin@upgrad.com' ? (
                       <div className='icon'>
                         <div className='modify-div'>
-                          <Button color='inherit' href='/modifyProduct'>
+                          <Button
+                            color='inherit'
+                            href={`/modifyProduct/${_id}`}
+                          >
                             <CreateIcon size='small' />
                           </Button>
                         </div>
                         <div className='del-div'>
-                          <DeleteProduct name={name} />
+                          <DeleteProduct name={name} id={_id} />
                         </div>
                       </div>
                     ) : null}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
@@ -8,8 +8,8 @@ import Button from '@mui/material/Button'
 import ConfirmOrder from '../confirmOrder/ConfirmOrder'
 import Address from '../address/Address'
 import CartItem from '../cartItem/CartItem'
-import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify'
 import './CreateOrder.css'
 import { connect } from 'react-redux'
 import { confirmOrder } from '../../store/actions/index'
@@ -29,103 +29,105 @@ const RenderStep = (step) => {
   }
 }
 
-const CreateOrder = ({ orders, quantity, selectedAddress, onConfirmOrder }) => {
-  const [activeStep, setActiveStep] = useState(0)
+const CreateOrder = memo(
+  ({ orders, quantity, selectedAddress, onConfirmOrder }) => {
+    const [activeStep, setActiveStep] = useState(0)
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
-  }
+    const handleNext = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    }
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1)
-  }
+    const handleBack = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1)
+    }
 
-  return (
-    <div className='stepdiv'>
-      <Box sx={{ width: '100%' }}>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => {
-            const stepProps = {}
-            const labelProps = {}
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            )
-          })}
-        </Stepper>
-        {activeStep === steps.length ? (
-          <React.Fragment>
-            <ToastContainer />
-            <div className='success-msg-div'>
-              <Typography variant='h5' gutterBottom>
-                Your order is confirmed!!!
-              </Typography>
-            </div>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            {RenderStep(activeStep)}
-            <div className='bottom-btn-div'>
-              <div className='btn-1-div'>
-                <Button
-                  color='inherit'
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  Back
-                </Button>
+    return (
+      <div className='stepdiv'>
+        <Box sx={{ width: '100%' }}>
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => {
+              const stepProps = {}
+              const labelProps = {}
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              )
+            })}
+          </Stepper>
+          {activeStep === steps.length ? (
+            <React.Fragment>
+              <div className='success-msg-div'>
+                <Typography variant='h5' gutterBottom>
+                  Your order is confirmed!!!
+                </Typography>
               </div>
-              <div className='btn-2-div'>
-                <Button onClick={handleNext}>
-                  {activeStep === steps.length - 1 ? (
-                    <div>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {RenderStep(activeStep)}
+              <div className='bottom-btn-div'>
+                <div className='btn-1-div'>
+                  <Button
+                    color='inherit'
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    sx={{ mr: 1 }}
+                  >
+                    Back
+                  </Button>
+                </div>
+                <div className='btn-2-div'>
+                  <Button onClick={handleNext}>
+                    {activeStep === steps.length - 1 ? (
+                      <div>
+                        <Button
+                          size='small'
+                          variant='contained'
+                          style={{
+                            backgroundColor: '#3f51b5',
+                            width: '150px',
+                          }}
+                          onClick={() => {
+                            return (
+                              toast.success('Order placed successfully!', {
+                                position: toast.POSITION.TOP_RIGHT,
+                              }),
+                              onConfirmOrder(
+                                orders._id,
+                                selectedAddress.value,
+                                quantity
+                              )
+                            )
+                          }}
+                          href='/products'
+                        >
+                          PLACE ORDER
+                        </Button>
+                        <ToastContainer />
+                      </div>
+                    ) : (
                       <Button
                         size='small'
                         variant='contained'
                         style={{
                           backgroundColor: '#3f51b5',
-                          width: '150px',
+                          width: '30px',
                         }}
-                        onClick={() => {
-                          return (
-                            onConfirmOrder(
-                              orders._id,
-                              selectedAddress.value,
-                              quantity
-                            ),
-                            toast.success('Order placed successfully!', {
-                              position: toast.POSITION.TOP_RIGHT,
-                            })
-                          )
-                        }}
-                        href='/products'
                       >
-                        PLACE ORDER
+                        NEXT
                       </Button>
-                    </div>
-                  ) : (
-                    <Button
-                      size='small'
-                      variant='contained'
-                      style={{
-                        backgroundColor: '#3f51b5',
-                        width: '30px',
-                      }}
-                    >
-                      NEXT
-                    </Button>
-                  )}
-                </Button>
+                    )}
+                  </Button>
+                </div>
               </div>
-            </div>
-          </React.Fragment>
-        )}
-      </Box>
-    </div>
-  )
-}
+            </React.Fragment>
+          )}
+        </Box>
+      </div>
+    )
+  }
+)
 
 const mapStateToProps = (state) => {
   return {

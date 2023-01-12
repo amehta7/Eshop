@@ -110,11 +110,11 @@ const Login = ({ onSignUser, user, error }) => {
               onClick={() => {
                 return (
                   <React.Fragment>
+                    {setSubmitted(true)}
                     {!error &&
                       email &&
                       password &&
                       onSignUser(email, password, navigate, location)}
-                    {!error ? setSubmitted(true) : null}
                   </React.Fragment>
                 )
               }}
