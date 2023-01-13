@@ -10,13 +10,14 @@ const {
   deleteProduct,
 } = require('./controllers/product')
 const router = express.Router()
-const { signUp, signIn } = require('./controllers/auth')
+const { signUp, signIn, verify } = require('./controllers/auth')
 const admin = require('./middleware/admin')
 const auth = require('./middleware/auth')
 
 //Auth
 router.post('/api/v1/users', signUp)
 router.post('/api/v1/auth', signIn)
+router.post('/api/v1/verify', verify)
 
 //Address
 router.post('/api/v1/addresses', auth, addAddress)

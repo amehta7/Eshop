@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom'
 
 const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
   const navigate = useNavigate()
+  let { id } = useParams()
+
   const [name, setName] = useState('')
   const [cat, setCat] = useState('')
   const [manu, setManu] = useState('')
@@ -19,25 +21,34 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
   const [price, setPrice] = useState('')
   const [url, setUrl] = useState('')
   const [desc, setDesc] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [data, setData] = useState()
 
-  let { id } = useParams()
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Hi')
-  }
+  useEffect(() => {
+    const product = products.filter((p) => p._id === id)
+    console.log(product)
+    setData(product)
+  }, [id, products])
 
   const handleModProduct = () => {
-    return onUpdateProduct(
-      id,
-      name,
-      cat,
-      manu,
-      price,
-      item,
-      url,
-      desc,
-      navigate
+    return (
+      <React.Fragment>
+        {setSubmitted(true)}
+        {!error && name && cat && manu && price && item && url && desc
+          ? (onUpdateProduct(
+              id,
+              name,
+              cat,
+              manu,
+              price,
+              item,
+              url,
+              desc,
+              navigate
+            ),
+            setSubmitted(true))
+          : null}
+      </React.Fragment>
     )
   }
 
@@ -55,12 +66,7 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
           <Typography component='h1' variant='h5'>
             Modify Product
           </Typography>
-          <Box
-            component='form'
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component='form' noValidate sx={{ mt: 1 }}>
             <TextField
               margin='normal'
               required
@@ -73,10 +79,14 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            {submitted && !name && (
+              <div style={{ color: 'red' }}>Name is required</div>
+            )}
             <TextField
               margin='normal'
               required
               fullWidth
+              defaultValue='Fashion'
               id='category'
               label='Category'
               name='category'
@@ -85,6 +95,9 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
               value={cat}
               onChange={(e) => setCat(e.target.value)}
             />
+            {submitted && !cat && (
+              <div style={{ color: 'red' }}>Category is required</div>
+            )}
             <TextField
               margin='normal'
               required
@@ -97,6 +110,9 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
               value={manu}
               onChange={(e) => setManu(e.target.value)}
             />
+            {submitted && !manu && (
+              <div style={{ color: 'red' }}>Manufacturer is required</div>
+            )}
             <TextField
               margin='normal'
               required
@@ -109,6 +125,9 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
               value={item}
               onChange={(e) => setItem(e.target.value)}
             />
+            {submitted && !item && (
+              <div style={{ color: 'red' }}>Available Items is required</div>
+            )}
             <TextField
               margin='normal'
               required
@@ -121,6 +140,9 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
+            {submitted && !price && (
+              <div style={{ color: 'red' }}>Price is required</div>
+            )}
             <TextField
               margin='normal'
               required
@@ -133,6 +155,9 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
+            {submitted && !url && (
+              <div style={{ color: 'red' }}>Image URL is required</div>
+            )}
             <TextField
               margin='normal'
               fullWidth
@@ -144,7 +169,9 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
-
+            {submitted && !desc && (
+              <div style={{ color: 'red' }}>Description is required</div>
+            )}
             <Button
               className='btn'
               type='button'

@@ -25,7 +25,13 @@ const ConfirmOrder = memo(
           <p>
             <i>{orders.description}</i>
           </p>
-          <p className='price'> Total Price : $ {orders.price * quantity}</p>
+          <p className='price'>
+            {' '}
+            Total Price : <span style={{ fontWeight: 'bold' }}>
+              &#8377;
+            </span>{' '}
+            {orders.price * quantity}
+          </p>
         </div>
         <div className='sec-div'>
           {addData &&

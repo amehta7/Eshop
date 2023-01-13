@@ -21,7 +21,11 @@ const CartItem = memo(() => {
         <p>
           <i>{order.description}</i>
         </p>
-        <p className='price'> Total Price : $ {order.price * quantity}</p>
+        <p className='price'>
+          {' '}
+          Total Price : <span style={{ fontWeight: 'bold' }}>&#8377;</span>{' '}
+          {order.price * quantity}
+        </p>
       </div>
     </div>
   )

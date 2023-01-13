@@ -11,13 +11,15 @@ import CreateOrder from './components/createOrder/CreateOrder'
 import ModifyProduct from './components/modifyProduct/ModifyProduct'
 import AddProduct from './components/addProduct/AddProduct'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Protected from './components/protected/Protected'
 import { connect } from 'react-redux'
+import { initUserState } from './store/actions/index'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
-import { signOut } from './store/actions/index'
 
-const App = ({ onSignOut, user }) => {
+const App = ({ user, onInitUserState }) => {
+  useEffect(() => {
+    onInitUserState()
+  }, [onInitUserState])
   return (
     <BrowserRouter>
       <ToastContainer />
@@ -26,48 +28,13 @@ const App = ({ onSignOut, user }) => {
 
         <Routes>
           <Route exact path='/' element={<Home />} />
-          <Route
-            path='/products'
-            element={
-              <Protected user={user}>
-                <Product />
-              </Protected>
-            }
-          />
+          <Route path='/products' element={<Product />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
-          <Route
-            path='/products/:id'
-            element={
-              <Protected user={user}>
-                <ProductDetail />
-              </Protected>
-            }
-          />
-          <Route
-            path='/createorder'
-            element={
-              <Protected user={user}>
-                <CreateOrder />
-              </Protected>
-            }
-          />
-          <Route
-            path='/addProduct'
-            element={
-              <Protected user={user}>
-                <AddProduct />
-              </Protected>
-            }
-          />
-          <Route
-            path='/modifyProduct/:id'
-            element={
-              <Protected user={user}>
-                <ModifyProduct />
-              </Protected>
-            }
-          />
+          <Route path='/products/:id' element={<ProductDetail />} />
+          <Route path='/createorder' element={<CreateOrder />} />
+          <Route path='/addProduct' element={<AddProduct />} />
+          <Route path='/modifyProduct/:id' element={<ModifyProduct />} />
           <Route path='*' element={<Nomatch />} />
         </Routes>
       </div>
@@ -81,14 +48,10 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, null)(App)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onInitUserState: () => dispatch(initUserState()),
+  }
+}
 
-//  useEffect(() => {
-//    onSignOut()
-//  }, [onSignOut])
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onSignOut: () => dispatch(signOut()),
-//   }
-// }
+export default connect(mapStateToProps, mapDispatchToProps)(App)

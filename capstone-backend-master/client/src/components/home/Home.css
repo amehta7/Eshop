@@ -1,11 +1,25 @@
-.wel-div {
+.image-container {
   position: relative;
-  padding: 200px;
+  text-align: center;
+  color: white;
+  height: 200px;
 }
 
-.wel-div > h1 {
-  position: relative;
-  top: 10px;
-  margin: 0px;
-  margin-bottom: 5px;
+.top-right {
+  position: absolute;
+  top: 165px;
+  right: 130px;
+}
+
+.head1 {
+  font-size: 45px;
+  font-weight: bolder;
+}
+
+.head2 {
+  font-size: 20px;
+}
+
+.shop-div {
+  padding-top: 40px;
 }

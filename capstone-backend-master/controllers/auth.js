@@ -24,6 +24,7 @@ async function signIn(req, res) {
       _id: user._id,
       name: `${user.firstName} ${user.lastName}`,
       isAdmin: user.role === ADMIN,
+      email: user.email,
     },
     '1@3456Qw-'
   )
@@ -32,6 +33,7 @@ async function signIn(req, res) {
     user: {
       name: `${user.firstName} ${user.lastName}`,
       email: user.email,
+      role: user.role,
       isAuthenticated: true,
     },
   })
@@ -78,7 +80,33 @@ async function signUp(req, res) {
   }
 }
 
+const verifyToken = (token) =>
+  new Promise((resolve, reject) => {
+    jwt.verify(token, '1@3456Qw-', (error) => {
+      if (error) return reject()
+      return resolve({ success: true })
+    })
+  })
+
+async function verify(req, res) {
+  try {
+    const { token } = req.body
+    // verify the token
+    const user = jwt.decode(token)
+    const findUser = await User.findOne({ email: user.email })
+    if (!findUser) {
+      return new Response(401, { error: 'Unauthorized' })
+    }
+    // Verify Token and resolve
+    await verifyToken(token)
+    res.json({ status: true })
+  } catch (error) {
+    res.status(403).json(error)
+  }
+}
+
 module.exports = {
   signUp,
   signIn,
+  verify,
 }

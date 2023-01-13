@@ -72,12 +72,7 @@ const NavBar = memo(
           <div>
             <ShoppingCartIcon style={{ fontSize: 29 }} />
           </div>
-          <Typography
-            variant='h6'
-            component='div'
-            sx={{ flexGrow: 1 }}
-            style={{ margin: '10px' }}
-          >
+          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             upGrad E-Shop
           </Typography>
           {user ? (
@@ -106,7 +101,7 @@ const NavBar = memo(
                 >
                   Home
                 </Button>
-                {user.role === 'admin' || user.email === 'admin@upgrad.com' ? (
+                {user.role === 'admin' ? (
                   <Link to='/addProduct'>
                     <Button
                       color='inherit'
@@ -120,7 +115,7 @@ const NavBar = memo(
                     </Button>
                   </Link>
                 ) : null}
-                <p>{user.name}</p>
+
                 <Link to='/' style={{ textDecoration: 'none' }}>
                   <Button
                     style={{
@@ -187,3 +182,5 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar)
+
+//|| user.email === 'admin@upgrad.com'

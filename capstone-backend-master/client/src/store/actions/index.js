@@ -346,25 +346,57 @@ export const signUp =
     doSignUp(firstName, lastName, email, password, contactNumber)
       .then((user) => {
         console.log(user)
-        window.localStorage.setItem('user', JSON.stringify(user))
         dispatch({ type: 'SIGNUP_SUCCESS', user })
-        navigate('/products')
+        navigate('/login')
       })
       .catch(() => {
         dispatch({ type: 'SIGNUP_FAILURE' })
       })
   }
 
-export const initUserState = () => {
-  return {
-    type: 'INIT_SUCCESS',
+const initUser = async () => {
+  let token = await getToken()
+  let user = JSON.parse(window.localStorage.getItem('user'))
+  if (token) {
+    let response = await fetch(`${baseURL}/verify`, {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: token }),
+    })
+    let data = await response.json()
+    console.log(data)
+    return user
   }
 }
 
-export const signOut = () => {
-  return {
-    type: 'SIGNOUT_SUCCESS',
-  }
+export const initUserState = () => (dispatch) =>
+  initUser()
+    .then((user) => {
+      console.log(user)
+      dispatch({ type: 'INIT_SUCCESS', user })
+    })
+    .catch(() => {
+      dispatch({ type: 'INIT_FAILURE' })
+    })
+
+const doSignOut = () =>
+  new Promise((resolve, reject) => {
+    try {
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('user')
+      resolve(true)
+    } catch {
+      reject(false)
+    }
+  })
+
+export const signOut = () => (dispatch) => {
+  doSignOut()
+    .then(() => dispatch({ type: 'SIGNOUT_SUCCESS' }))
+    .catch(() => dispatch({ type: 'SIGNOUT_FAILURE' }))
 }
 
 export const addToCart = (products, quantity) => {

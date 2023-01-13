@@ -29,7 +29,11 @@ const ProductList = memo(({ products, user }) => {
                   <CardContent>
                     <div className='content'>
                       <div>{name}</div>
-                      <div>$ {price}</div>
+
+                      <div>
+                        <span style={{ fontWeight: 'bold' }}>&#8377;</span>{' '}
+                        {price}
+                      </div>
                     </div>
                     <div>
                       <p>{description}</p>
@@ -44,8 +48,7 @@ const ProductList = memo(({ products, user }) => {
                     >
                       BUY
                     </Button>
-                    {user.role === 'admin' ||
-                    user.email === 'admin@upgrad.com' ? (
+                    {user && user.role === 'admin' ? (
                       <div className='icon'>
                         <div className='modify-div'>
                           <Button

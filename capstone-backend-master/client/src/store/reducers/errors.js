@@ -25,6 +25,18 @@ const errors = (state = initialState, action) => {
       }
     }
 
+    case 'SIGNOUT_FAILURE': {
+      return {
+        error: true,
+      }
+    }
+
+    case 'INIT_FAILURE': {
+      return {
+        error: true,
+      }
+    }
+
     case 'DELETE_PRODUCTS_FAILURE': {
       return {
         error: true,

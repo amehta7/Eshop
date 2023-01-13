@@ -31,7 +31,9 @@ const ProductDetail = memo(({ products, onFetchProductById, onAddToCart }) => {
         <p>
           <i>{products.description}</i>
         </p>
-        <p className='price'>$ {products.price}</p>
+        <p className='price'>
+          <span style={{ fontWeight: 'bold' }}>&#8377;</span> {products.price}
+        </p>
         <img src={products.imageURL} alt={products.name} />
         <div className='details'>
           <TextField

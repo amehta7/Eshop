@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField'
 import './Address.css'
 import { connect } from 'react-redux'
 import { addAddress, getAddress, addToAddress } from '../../store/actions/index'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const Address = memo(
@@ -42,13 +42,6 @@ const Address = memo(
 
     const handleSubmit = (e) => {
       e.preventDefault()
-      setName('')
-      setContactNumber('')
-      setStreet('')
-      setCity('')
-      setState('')
-      setLandmark('')
-      setZipCode('')
     }
 
     return (
@@ -227,8 +220,9 @@ const Address = memo(
                               landmark,
                               zipCode
                             )}
-
-                          {!error ? setSubmitted(true) : null}
+                          setName('') setContactNumber('') setStreet('')
+                          setCity('') setState('') setLandmark('')
+                          setZipCode('')
                         </React.Fragment>
                       )
                     }}
@@ -272,3 +266,9 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Address)
+
+// {selectedOption === '' &&
+//              toast.error(`Please select address!`, {
+//                 position: toast.POSITION.TOP_RIGHT,
+//               })
+//             }
