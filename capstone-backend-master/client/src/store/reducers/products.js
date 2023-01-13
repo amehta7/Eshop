@@ -43,7 +43,18 @@ const products = (state = initialState, action) => {
     case 'UPDATE_PRODUCT_SUCCESS': {
       return {
         ...state,
-        products: [action.products, ...state.products],
+        // products: [action.products, ...state.products],
+        products: [
+          ...state.products.filter((product) => {
+            if (product._id === action.products._id) {
+              return {
+                ...product,
+                ...action.products,
+              }
+            }
+            return product
+          }),
+        ],
       }
     }
 

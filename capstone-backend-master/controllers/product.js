@@ -60,7 +60,11 @@ async function updateProductDetails(req, res) {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
-      requestBody
+      requestBody,
+      {
+        new: true,
+        runValidators: true,
+      }
     )
     res.send(updatedProduct)
   } catch (ex) {

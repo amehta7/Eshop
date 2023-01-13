@@ -49,12 +49,12 @@ const ProductDetail = memo(({ products, onFetchProductById, onAddToCart }) => {
             onChange={(e) => setQty(Number(e.target.value))}
           />
 
-          {!qty && (
+          {orderbtnClick && !qty && (
             <div className='err-div'>Please fill the Quantity Field</div>
           )}
           <br />
           <Link
-            to={qty !== '' && orderbtnClick ? '/createorder' : '#'}
+            to={qty ? '/createorder' : '#'}
             style={{ textDecoration: 'none' }}
           >
             <Button
@@ -66,8 +66,8 @@ const ProductDetail = memo(({ products, onFetchProductById, onAddToCart }) => {
                 width: '150px',
               }}
               onClick={() => {
-                onAddToCart(products, qty)
                 setOrderbtnClick(true)
+                onAddToCart(products, qty)
               }}
             >
               PLACE ORDER

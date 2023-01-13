@@ -104,7 +104,6 @@ const CreateOrder = memo(
                         >
                           PLACE ORDER
                         </Button>
-                        <ToastContainer />
                       </div>
                     ) : (
                       <Button

@@ -1,4 +1,4 @@
-###### upGrad Eshop
+# upGrad Eshop
 
 #### Make sure client(port 3000) and server(port 3001) both are running simultaneously to run this project.
 
