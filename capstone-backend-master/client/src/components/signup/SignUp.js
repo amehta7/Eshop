@@ -72,6 +72,9 @@ const Signup = ({ onSignUpUser, user, error }) => {
               autoFocus
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
+              InputProps={{
+                inputProps: { min: 5 },
+              }}
             />
             {submitted && !firstName && (
               <div style={{ color: 'red' }}>First Name is required</div>
@@ -92,6 +95,9 @@ const Signup = ({ onSignUpUser, user, error }) => {
               autoFocus
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              InputProps={{
+                inputProps: { min: 5 },
+              }}
             />
             {submitted && !lastName && (
               <div style={{ color: 'red' }}>Last Name is required</div>
@@ -133,6 +139,9 @@ const Signup = ({ onSignUpUser, user, error }) => {
               autoFocus
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                inputProps: { min: 5 },
+              }}
             />
             {submitted && !password && (
               <div style={{ color: 'red' }}>Password is required</div>
@@ -166,19 +175,23 @@ const Signup = ({ onSignUpUser, user, error }) => {
               margin='normal'
               required
               fullWidth
+              type='number'
               name='contactNumber'
               label='Contact Number'
               id='contactNumber'
               autoFocus
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
+              InputProps={{
+                inputProps: { min: 10, max: 10 },
+              }}
             />
             {submitted && !contactNumber && (
               <div style={{ color: 'red' }}>Contact Number is required</div>
             )}
             {submitted && contactNumber.length < 10 && (
               <div style={{ color: 'red' }}>
-                Contact Number length must be at least 10 characters long
+                Contact Number length must be 10 digits long
               </div>
             )}
             <Button

@@ -14,13 +14,13 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
   const navigate = useNavigate()
   let { id } = useParams()
 
-  const [name, setName] = useState('')
-  const [cat, setCat] = useState('')
-  const [manu, setManu] = useState('')
-  const [item, setItem] = useState('')
-  const [price, setPrice] = useState('')
-  const [url, setUrl] = useState('')
-  const [desc, setDesc] = useState('')
+  const [name, setName] = useState()
+  const [cat, setCat] = useState()
+  const [manu, setManu] = useState()
+  const [item, setItem] = useState()
+  const [price, setPrice] = useState()
+  const [url, setUrl] = useState()
+  const [desc, setDesc] = useState()
   const [submitted, setSubmitted] = useState(false)
   const [data, setData] = useState()
 
@@ -119,6 +119,7 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
                     margin='normal'
                     required
                     fullWidth
+                    type='number'
                     defaultValue={d.availableItems}
                     id='item'
                     label='Available Items'
@@ -136,6 +137,7 @@ const ModifyProduct = memo(({ onUpdateProduct, error, products }) => {
                     margin='normal'
                     required
                     fullWidth
+                    type='number'
                     defaultValue={d.price}
                     id='price'
                     label='Price'

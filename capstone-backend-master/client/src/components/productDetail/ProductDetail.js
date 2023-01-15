@@ -40,6 +40,7 @@ const ProductDetail = memo(({ products, onFetchProductById, onAddToCart }) => {
             margin='normal'
             required
             fullWidth
+            type='number'
             defaultValue='1'
             id='quantity'
             label='Enter Quantity'
@@ -47,14 +48,25 @@ const ProductDetail = memo(({ products, onFetchProductById, onAddToCart }) => {
             autoComplete='quantity'
             style={{ width: '300px', height: '0px' }}
             onChange={(e) => setQty(Number(e.target.value))}
+            InputProps={{
+              inputProps: { min: 1, max: `${products.availableItems}` },
+            }}
           />
 
           {orderbtnClick && !qty && (
             <div className='err-div'>Please fill the Quantity Field</div>
           )}
+          {orderbtnClick && qty > `${products.availableItems}` && (
+            <div className='err-div'>
+              {' '}
+              Quantity Field should not be more than available items!!!
+            </div>
+          )}
           <br />
           <Link
-            to={qty ? '/createorder' : '#'}
+            to={
+              qty && qty <= `${products.availableItems}` ? '/createorder' : '#'
+            }
             style={{ textDecoration: 'none' }}
           >
             <Button
@@ -66,8 +78,14 @@ const ProductDetail = memo(({ products, onFetchProductById, onAddToCart }) => {
                 width: '150px',
               }}
               onClick={() => {
-                setOrderbtnClick(true)
-                onAddToCart(products, qty)
+                return (
+                  <React.Fragment>
+                    {setOrderbtnClick(true)}
+                    {qty && qty <= `${products.availableItems}`
+                      ? onAddToCart(products, qty)
+                      : null}
+                  </React.Fragment>
+                )
               }}
             >
               PLACE ORDER

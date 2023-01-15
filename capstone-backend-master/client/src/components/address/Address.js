@@ -40,10 +40,6 @@ const Address = memo(
       onAddToAddress(selectedOption)
     }
 
-    const handleSubmit = (e) => {
-      e.preventDefault()
-    }
-
     return (
       <div className='address-div'>
         <div>
@@ -74,12 +70,7 @@ const Address = memo(
                 <Typography component='h1' variant='h5'>
                   Add Address
                 </Typography>
-                <Box
-                  component='form'
-                  noValidate
-                  sx={{ mt: 1 }}
-                  onSubmit={handleSubmit}
-                >
+                <Box component='form' noValidate sx={{ mt: 1 }}>
                   <TextField
                     margin='normal'
                     required
@@ -99,6 +90,7 @@ const Address = memo(
                     margin='normal'
                     required
                     fullWidth
+                    type='number'
                     id='cnumber'
                     label='Contact Number'
                     name='cnumber'
@@ -106,6 +98,9 @@ const Address = memo(
                     autoFocus
                     value={contactNumber}
                     onChange={(e) => setContactNumber(e.target.value)}
+                    InputProps={{
+                      inputProps: { min: 10, max: 10 },
+                    }}
                   />
                   {submitted && !contactNumber && (
                     <div style={{ color: 'red' }}>
@@ -114,7 +109,7 @@ const Address = memo(
                   )}
                   {submitted && contactNumber.length < 10 && (
                     <div style={{ color: 'red' }}>
-                      Contact Number length must be at least 10 characters long
+                      Contact Number length must be 10 digits long
                     </div>
                   )}
                   <TextField
@@ -177,6 +172,7 @@ const Address = memo(
                     margin='normal'
                     required
                     fullWidth
+                    type='number'
                     id='zcode'
                     label='Zip Code'
                     name='zcode'
@@ -184,13 +180,16 @@ const Address = memo(
                     autoFocus
                     value={zipCode}
                     onChange={(e) => setZipCode(e.target.value)}
+                    InputProps={{
+                      inputProps: { min: 6, max: 6 },
+                    }}
                   />
                   {submitted && !zipCode && (
                     <div style={{ color: 'red' }}>Zip Code is required</div>
                   )}
                   {submitted && zipCode.length < 6 && (
                     <div style={{ color: 'red' }}>
-                      Zip Code must be at least 6 characters long
+                      Zip Code must be at least 6 digits long
                     </div>
                   )}
                   <Button
@@ -220,9 +219,16 @@ const Address = memo(
                               landmark,
                               zipCode
                             )}
-                          setName('') setContactNumber('') setStreet('')
-                          setCity('') setState('') setLandmark('')
-                          setZipCode('')
+                          {
+                            (setName(''),
+                            setContactNumber(''),
+                            setStreet(''),
+                            setCity(''),
+                            setState(''),
+                            setLandmark(''),
+                            setZipCode(''),
+                            setSubmitted(false))
+                          }
                         </React.Fragment>
                       )
                     }}
@@ -266,9 +272,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Address)
-
-// {selectedOption === '' &&
-//              toast.error(`Please select address!`, {
-//                 position: toast.POSITION.TOP_RIGHT,
-//               })
-//             }

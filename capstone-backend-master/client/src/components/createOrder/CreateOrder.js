@@ -9,7 +9,7 @@ import ConfirmOrder from '../confirmOrder/ConfirmOrder'
 import Address from '../address/Address'
 import CartItem from '../cartItem/CartItem'
 import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import './CreateOrder.css'
 import { connect } from 'react-redux'
 import { confirmOrder } from '../../store/actions/index'
@@ -35,6 +35,14 @@ const CreateOrder = memo(
 
     const handleNext = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1)
+      console.log(activeStep)
+      if (activeStep === 1 && !selectedAddress.value) {
+        console.log('first step')
+        toast.error(`Please select address!`, {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+        setActiveStep(1)
+      }
     }
 
     const handleBack = () => {

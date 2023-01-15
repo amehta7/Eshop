@@ -91,6 +91,9 @@ const Login = ({ onSignUser, user, error }) => {
               autoComplete='current-password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                inputProps: { min: 5 },
+              }}
             />
             {submitted && !password && (
               <div style={{ color: 'red' }}>Password is required</div>

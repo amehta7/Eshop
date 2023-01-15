@@ -19,6 +19,7 @@ const defaultOptions = [
   createOption('Apparel'),
   createOption('Electronics'),
   createOption('Personal Care'),
+  createOption('Automotive'),
 ]
 
 const AddProduct = memo(({ onAddProduct, error, products }) => {
@@ -136,6 +137,7 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               margin='normal'
               required
               fullWidth
+              type='number'
               id='item'
               label='Available Items'
               name='item'
@@ -151,6 +153,7 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               margin='normal'
               required
               fullWidth
+              type='number'
               id='price'
               label='Price'
               name='price'
@@ -179,6 +182,7 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
             )}
             <TextField
               margin='normal'
+              required
               fullWidth
               id='desc'
               label='Product Description'

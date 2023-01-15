@@ -505,14 +505,13 @@ const doConfirmOrder = async (product, address, quantity) => {
   return data
 }
 
-export const confirmOrder =
-  (product, address, quantity, navigate) => (dispatch) => {
-    doConfirmOrder(product, address, quantity)
-      .then((order) => {
-        console.log(order)
-        dispatch({ type: 'CONFIRM_ORDER_SUCCESS', order })
-      })
-      .catch(() => {
-        dispatch({ type: 'CONFIRM_ORDER_FAILURE' })
-      })
-  }
+export const confirmOrder = (product, address, quantity) => (dispatch) => {
+  doConfirmOrder(product, address, quantity)
+    .then((order) => {
+      console.log(order)
+      dispatch({ type: 'CONFIRM_ORDER_SUCCESS', order })
+    })
+    .catch(() => {
+      dispatch({ type: 'CONFIRM_ORDER_FAILURE' })
+    })
+}
