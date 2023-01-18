@@ -62,10 +62,15 @@ const ProductDetail = memo(({ products, onFetchProductById, onAddToCart }) => {
               Quantity Field should not be more than available items!!!
             </div>
           )}
+          {orderbtnClick && qty <= 0 && (
+            <div className='err-div'>Quantity Field should be more than 0</div>
+          )}
           <br />
           <Link
             to={
-              qty && qty <= `${products.availableItems}` ? '/createorder' : '#'
+              qty && qty <= `${products.availableItems}` && qty > 0
+                ? '/createorder'
+                : '#'
             }
             style={{ textDecoration: 'none' }}
           >

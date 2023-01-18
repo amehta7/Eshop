@@ -204,31 +204,30 @@ const Address = memo(
                         <React.Fragment>
                           {setSubmitted(true)}
                           {!error &&
-                            name &&
-                            contactNumber &&
-                            street &&
-                            city &&
-                            state &&
-                            zipCode &&
-                            onAddAddress(
-                              name,
-                              contactNumber,
-                              street,
-                              city,
-                              state,
-                              landmark,
-                              zipCode
-                            )}
-                          {
-                            (setName(''),
-                            setContactNumber(''),
-                            setStreet(''),
-                            setCity(''),
-                            setState(''),
-                            setLandmark(''),
-                            setZipCode(''),
-                            setSubmitted(false))
-                          }
+                          name &&
+                          contactNumber &&
+                          street &&
+                          city &&
+                          state &&
+                          zipCode
+                            ? (onAddAddress(
+                                name,
+                                contactNumber,
+                                street,
+                                city,
+                                state,
+                                landmark,
+                                zipCode
+                              ),
+                              setName(''),
+                              setContactNumber(''),
+                              setStreet(''),
+                              setCity(''),
+                              setState(''),
+                              setLandmark(''),
+                              setZipCode(''),
+                              setSubmitted(false))
+                            : null}
                         </React.Fragment>
                       )
                     }}

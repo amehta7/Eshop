@@ -108,7 +108,6 @@ const CreateOrder = memo(
                               )
                             )
                           }}
-                          href='/products'
                         >
                           PLACE ORDER
                         </Button>
