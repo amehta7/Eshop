@@ -1,0 +1,62 @@
+.imageCard {
+  object-fit: fill;
+}
+
+.container {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.content > div {
+  font-size: medium;
+  font-weight: bold;
+}
+
+.icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-left: 130px;
+}
+
+.sort-div {
+  padding-bottom: 40px;
+  position: relative;
+  font-size: 15px;
+  width: 250px;
+}
+
+/* top | right | bottom | left */
+
+.card {
+  width: 90vw;
+  max-width: var(--max-width);
+  display: grid;
+  gap: 2rem;
+  margin: 0 auto;
+  padding-bottom: 5rem;
+  padding-top: 3rem;
+  grid-template-columns: auto auto auto;
+}
+
+.main-div {
+  padding-bottom: 40px;
+}
+
+/* .card {
+  padding: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
+  position: relative;
+} */

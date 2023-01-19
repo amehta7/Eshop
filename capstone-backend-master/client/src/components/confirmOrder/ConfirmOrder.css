@@ -1,0 +1,51 @@
+.order-div {
+  position: relative;
+  top: 30px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex: 1;
+  background-color: white;
+  box-shadow: 0.1px 2px rgb(216, 215, 215);
+}
+
+.first-div,
+.sec-div {
+  padding: 30px 5px 50px 50px;
+}
+
+.first-div {
+  flex: 60%;
+  border-right: 3px solid rgb(245, 244, 244);
+}
+
+.sec-div {
+  flex: 40%;
+}
+
+.first-div > h2 {
+  font-size: 2rem;
+}
+
+.first-div > p {
+  margin-top: 2px;
+  font-size: 14px;
+}
+
+.first-div > .price {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sec-div > .title {
+  font-size: 30px;
+  font-weight: bold;
+  padding-top: 30px;
+}
+
+.sec-div > p {
+  margin-top: 2px;
+  font-size: 14px;
+}

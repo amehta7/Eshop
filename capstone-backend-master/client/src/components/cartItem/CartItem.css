@@ -1,0 +1,44 @@
+.cartdiv {
+  position: relative;
+  top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.detail-div {
+  padding-left: 1px;
+  flex: 60%;
+}
+
+.img-div {
+  padding-right: 1px;
+  flex: 40%;
+}
+
+.detail-div > h2 {
+  position: relative;
+  font-size: 2rem;
+}
+
+.detail-div > p {
+  position: relative;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+
+.detail-div > .price {
+  color: red;
+  position: relative;
+  margin-top: 2px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.img-div > img {
+  position: relative;
+  margin-top: 20px;
+  margin-left: 240px;
+  margin-right: 21px;
+  width: 280px;
+}

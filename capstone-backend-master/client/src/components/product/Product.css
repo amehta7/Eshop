@@ -1,0 +1,25 @@
+.toggle-div {
+  padding-top: 100px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.list {
+  padding-top: 20px;
+  padding-left: 40px;
+}
+
+.sort-div {
+  padding-bottom: 40px;
+  position: relative;
+  font-size: 15px;
+  width: 250px;
+  padding-left: 20px;
+}
+
+.sel-pro-div {
+  height: 30px;
+  width: 200px;
+  font-size: 15px;
+}
