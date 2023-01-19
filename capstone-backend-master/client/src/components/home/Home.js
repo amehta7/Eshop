@@ -6,9 +6,9 @@ import Button from '@mui/material/Button'
 const Home = () => {
   return (
     <React.Fragment>
-      <div class='image-container'>
+      <div className='image-container'>
         <img src={mainImage} alt='Background_Image' style={{ width: '100%' }} />
-        <div class='top-right'>
+        <div className='top-right'>
           <p className='head1'>SHOP OUR NEW COLLECTION</p>
           <p className='head2'>
             FROM HEIGHT TO LOW, CLASSIC OR MODERN. WE HAVE YOU COVERED

@@ -87,7 +87,6 @@ const Login = ({ onSignUser, user, error }) => {
               label='Password'
               type='password'
               id='password'
-              autoFocus
               autoComplete='current-password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}

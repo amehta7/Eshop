@@ -80,7 +80,7 @@ export const fetchProductsBySort = (sortBy, direction) => (dispatch) =>
       })
     )
 
-const getProById = async (id) => {
+export const getProById = async (id) => {
   let response = await fetch(`${baseURL}/products/${id}`)
   let data = await response.json()
   console.log(data)
@@ -510,6 +510,8 @@ export const confirmOrder = (product, address, quantity) => (dispatch) => {
     .then((order) => {
       console.log(order)
       dispatch({ type: 'CONFIRM_ORDER_SUCCESS', order })
+
+      console.log('order created')
     })
     .catch(() => {
       dispatch({ type: 'CONFIRM_ORDER_FAILURE' })

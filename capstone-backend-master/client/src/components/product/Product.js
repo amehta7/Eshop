@@ -36,6 +36,11 @@ const Product = memo(
     useEffect(() => {
       onFetchProducts()
       onFetchCategories()
+    }, [])
+
+    useEffect(() => {
+      onFetchProducts()
+      onFetchCategories()
     }, [onFetchProducts, onFetchCategories])
 
     const handleSelectChange = (selectedOption) => {

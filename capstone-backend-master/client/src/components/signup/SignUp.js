@@ -92,7 +92,6 @@ const Signup = ({ onSignUpUser, user, error }) => {
               label='Last Name'
               name='lastname'
               autoComplete='lastname'
-              autoFocus
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               InputProps={{
@@ -115,7 +114,6 @@ const Signup = ({ onSignUpUser, user, error }) => {
               label='Email Address'
               name='email'
               autoComplete='email'
-              autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -136,7 +134,6 @@ const Signup = ({ onSignUpUser, user, error }) => {
               label='Password'
               type='password'
               id='password'
-              autoFocus
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               InputProps={{
@@ -159,7 +156,6 @@ const Signup = ({ onSignUpUser, user, error }) => {
               label='Confirm Password'
               type='password'
               id='confirmpassword'
-              autoFocus
               value={rePassword}
               onChange={(e) => setRePassword(e.target.value)}
             />
@@ -179,7 +175,6 @@ const Signup = ({ onSignUpUser, user, error }) => {
               name='contactNumber'
               label='Contact Number'
               id='contactNumber'
-              autoFocus
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
               InputProps={{

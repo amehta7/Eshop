@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import './CreateOrder.css'
 import { connect } from 'react-redux'
 import { confirmOrder } from '../../store/actions/index'
+import { useNavigate } from 'react-router-dom'
 
 const steps = ['Items', 'Select Address', 'Confirm Order']
 
@@ -31,6 +32,7 @@ const RenderStep = (step) => {
 
 const CreateOrder = memo(
   ({ orders, quantity, selectedAddress, onConfirmOrder }) => {
+    const navigate = useNavigate()
     const [activeStep, setActiveStep] = useState(0)
 
     const handleNext = () => {
@@ -69,6 +71,18 @@ const CreateOrder = memo(
                 <Typography variant='h5' gutterBottom>
                   Your order is confirmed!!!
                 </Typography>
+                <Button
+                  size='small'
+                  variant='contained'
+                  style={{
+                    backgroundColor: '#3f51b5',
+                    top: '70px',
+                    width: '150px',
+                  }}
+                  href='/products'
+                >
+                  Go To Home Page
+                </Button>
               </div>
             </React.Fragment>
           ) : (
@@ -91,6 +105,7 @@ const CreateOrder = memo(
                       <div>
                         <Button
                           size='small'
+                          type='button'
                           variant='contained'
                           style={{
                             backgroundColor: '#3f51b5',
@@ -98,14 +113,14 @@ const CreateOrder = memo(
                           }}
                           onClick={() => {
                             return (
-                              toast.success('Order placed successfully!', {
-                                position: toast.POSITION.TOP_RIGHT,
-                              }),
                               onConfirmOrder(
                                 orders._id,
                                 selectedAddress.value,
                                 quantity
-                              )
+                              ),
+                              toast.success(`Order placed successfully!`, {
+                                position: toast.POSITION.TOP_RIGHT,
+                              })
                             )
                           }}
                         >

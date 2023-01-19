@@ -72,7 +72,12 @@ const NavBar = memo(
           <div>
             <ShoppingCartIcon style={{ fontSize: 29 }} />
           </div>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1 }}
+            style={{ paddingLeft: '5px' }}
+          >
             upGrad E-Shop
           </Typography>
           {user ? (

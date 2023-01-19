@@ -95,7 +95,6 @@ const Address = memo(
                     label='Contact Number'
                     name='cnumber'
                     autoComplete='number'
-                    autoFocus
                     value={contactNumber}
                     onChange={(e) => setContactNumber(e.target.value)}
                     InputProps={{
@@ -120,7 +119,6 @@ const Address = memo(
                     label='Street'
                     name='street'
                     autoComplete='street'
-                    autoFocus
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
                   />
@@ -135,7 +133,6 @@ const Address = memo(
                     label='City'
                     name='city'
                     autoComplete='city'
-                    autoFocus
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                   />
@@ -150,7 +147,6 @@ const Address = memo(
                     label='State'
                     name='state'
                     autoComplete='state'
-                    autoFocus
                     value={state}
                     onChange={(e) => setState(e.target.value)}
                   />
@@ -164,7 +160,6 @@ const Address = memo(
                     label='Landmark'
                     name='landmark'
                     autoComplete='landmark'
-                    autoFocus
                     value={landmark}
                     onChange={(e) => setLandmark(e.target.value)}
                   />
@@ -177,7 +172,6 @@ const Address = memo(
                     label='Zip Code'
                     name='zcode'
                     autoComplete='Zip Code'
-                    autoFocus
                     value={zipCode}
                     onChange={(e) => setZipCode(e.target.value)}
                     InputProps={{

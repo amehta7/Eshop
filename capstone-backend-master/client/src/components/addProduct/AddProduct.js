@@ -56,7 +56,9 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
         price &&
         availableItems &&
         imageURL &&
-        description
+        description &&
+        availableItems >= 0 &&
+        price > 0
           ? (onAddProduct(
               name,
               category.label,
@@ -126,7 +128,6 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               label='Manufacturer'
               name='manufacturer'
               autoComplete='manufacturer'
-              autoFocus
               value={manufacturer}
               onChange={(e) => setManufacturer(e.target.value)}
             />
@@ -142,12 +143,16 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               label='Available Items'
               name='item'
               autoComplete='Available Items'
-              autoFocus
               value={availableItems}
               onChange={(e) => setAvailableItems(e.target.value)}
             />
             {submitted && !availableItems && (
               <div style={{ color: 'red' }}>Available Items is required</div>
+            )}
+            {submitted && availableItems < 0 && (
+              <div style={{ color: 'red' }}>
+                Available Items should be equal or more than zero
+              </div>
             )}
             <TextField
               margin='normal'
@@ -158,12 +163,14 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               label='Price'
               name='price'
               autoComplete='price'
-              autoFocus
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
             {submitted && !price && (
               <div style={{ color: 'red' }}>Price is required</div>
+            )}
+            {submitted && price <= 0 && (
+              <div style={{ color: 'red' }}>Price should be more than zero</div>
             )}
             <TextField
               margin='normal'
@@ -173,7 +180,6 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               label='Image URL'
               name='url'
               autoComplete='image url'
-              autoFocus
               value={imageURL}
               onChange={(e) => setImageURL(e.target.value)}
             />
@@ -188,7 +194,6 @@ const AddProduct = memo(({ onAddProduct, error, products }) => {
               label='Product Description'
               name='desc'
               autoComplete='product description'
-              autoFocus
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
